@@ -1,11 +1,17 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import { initDatabase } from "./db/index.js";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
+// Инициализация базы данных
+initDatabase().catch((err) => {
+  console.error("Ошибка инициализации базы данных:", err);
+});
+
+app.get("/", (req, res) => {
   res.send("Permiset Server is running!");
 });
 
