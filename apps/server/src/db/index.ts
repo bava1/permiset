@@ -3,16 +3,17 @@ import { JSONFile } from "lowdb/node";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Создание эквивалента __dirname для ESM
+// Creating an ESM equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Типизация базы данных
+// Database Typing
 type DatabaseSchema = {
   users: Array<{
     id: string;
     name: string;
     email: string;
+    password: string; // Добавляем пароль
     role: string;
     status: string;
     createdAt: string;
@@ -34,35 +35,37 @@ type DatabaseSchema = {
     targetId: string;
     timestamp: string;
   }>;
+  refreshTokens: string[]; 
 };
 
-// Путь к файлу базы данных
+// Path to the database file
 const dbFilePath = path.resolve(__dirname, "db.json");
 const adapter = new JSONFile<DatabaseSchema>(dbFilePath);
 const db = new Low(adapter);
 
 export async function initDatabase() {
-  console.log("Инициализация базы данных...");
+  console.log("Initializing database...");
 
-  // Чтение данных из базы
+  // Reading data from the database
   await db.read();
 
-  // Установка объекта `db.data`, если он не определён
+  // Setting the `db.data` object if it is not defined
   if (!db.data) {
     db.data = {
       users: [],
       roles: [],
       permissions: [],
       auditLogs: [],
+      refreshTokens: []
     };
   }
 
-  // Инициализация массива ролей, если он не существует
+  // Initialize the roles array if it does not exist
   if (!db.data.roles) {
     db.data.roles = [];
   }
 
-  // Добавление примерных данных для ролей, если их нет
+  // Adding sample data for roles if they do not exist
   if (db.data.roles.length === 0) {
     db.data.roles = [
       { id: "role_user", name: "User", permissions: ["read"] },
@@ -71,12 +74,12 @@ export async function initDatabase() {
     ];
   }
 
-  // Инициализация массива прав, если он не существует
+  // Initialize the rights array if it does not exist
   if (!db.data.permissions) {
     db.data.permissions = [];
   }
 
-  // Добавление примерных данных для прав, если их нет
+  // Adding sample data for rights if they are not there
   if (db.data.permissions.length === 0) {
     db.data.permissions = [
       { id: "permission_read", name: "read" },
@@ -87,13 +90,14 @@ export async function initDatabase() {
     ];
   }
 
-  // Убедимся, что остальные поля тоже инициализированы
+  // Let's make sure that the other fields are also initialized.
   db.data.users ||= [];
   db.data.auditLogs ||= [];
+  db.data.refreshTokens ||= [];
 
-  // Запись данных в файл
+  // Writing data to a file
   await db.write();
-  console.log("База данных инициализирована!");
+  console.log("The database has been initialized.!");
 }
 
 export { db };

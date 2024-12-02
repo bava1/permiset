@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "Node16",  // Изменено на Node16
+    "module": "NodeNext", 
     "moduleResolution": "node16",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
     "outDir": "dist"
   },
   "include": ["src"]

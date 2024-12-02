@@ -50,6 +50,68 @@
       "name": "change_roles"
     }
   ],
-  "users": [],
-  "auditLogs": []
+  "users": [
+    {
+      "id": "1733128809610",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "$2b$10$EJy8B2ZwiFY8DfOefAkr4Ot.I.rWbqYeOgwPD1rvH1mhXUt0SQEU2",
+      "role": "User",
+      "status": "active",
+      "createdAt": "2024-12-02T08:40:09.610Z",
+      "updatedAt": "2024-12-02T08:40:09.610Z"
+    },
+    {
+      "id": "1733132109621",
+      "name": "Vados Barva Update",
+      "email": "john.doe@example.com",
+      "password": "$2b$10$EJy8B2ZwiFY8DfOefAkr4Ot.I.rWbqYeOgwPD1rvH1mhXUt0SQEU2",
+      "role": "User",
+      "status": "active",
+      "createdAt": "2024-12-02T09:35:09.621Z",
+      "updatedAt": "2024-12-02T09:37:13.878Z"
+    },
+    {
+      "id": "1733132535097",
+      "name": "Valde Mort",
+      "email": "john.doe@example.com",
+      "password": "$2b$10$4UHTCL.sQet4Br0DjNR3U.8tAhNPSkgLzn/rqP7dwrf014LGVmkoK",
+      "role": "Manager",
+      "status": "active",
+      "createdAt": "2024-12-02T09:42:15.097Z",
+      "updatedAt": "2024-12-02T09:42:15.097Z"
+    },
+    {
+      "id": "1733132583554",
+      "name": "Boh",
+      "email": "john.doe@example.com",
+      "password": "$2b$10$Awj0mq0YxKjPoBRgl8YPU.bOjAfGE5lkvzKY/.Yd0c5GiKzF76tem",
+      "role": "Administrator",
+      "status": "active",
+      "createdAt": "2024-12-02T09:43:03.554Z",
+      "updatedAt": "2024-12-02T09:43:03.554Z"
+    },
+    {
+      "id": "1733140506608",
+      "name": "Boh 2",
+      "email": "john.doe@example.com",
+      "password": "$2b$10$Awj0mq0YxKjPoBRgl8YPU.bOjAfGE5lkvzKY/.Yd0c5GiKzF76tem",
+      "role": "Administrator",
+      "status": "active",
+      "createdAt": "2024-12-02T11:55:06.608Z",
+      "updatedAt": "2024-12-02T11:55:06.609Z"
+    },
+    {
+      "id": "1733144809909",
+      "name": "Boh 3",
+      "email": "john.doe@example.com",
+      "password": "$2b$10$rDwy0iv6WhM9qXZoPgo6uuQWZXmxP1iUxHETiW8.tr2Bgord5poXO",
+      "role": "Administrator",
+      "status": "active",
+      "createdAt": "2024-12-02T13:06:50.028Z",
+      "updatedAt": "2024-12-02T13:06:50.030Z"
+    }
+  ],
+  "auditLogs": [],
+  "refreshTokens": []
 }
