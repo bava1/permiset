@@ -11,11 +11,11 @@ const JWT_EXPIRES_IN = "1h";
 
 // POST /auth/login - User authorization
 router.post("/login", async (req, res) => {
-  const { name, password } = req.body;
+  const { email, password } = req.body;
 
   // Check if the user exists
   await db.read();
-  const user = db.data?.users.find((u) => u.name === name);
+  const user = db.data?.users.find((u) => u.email === email)
 
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
@@ -38,6 +38,7 @@ router.post("/login", async (req, res) => {
 // GET /auth/verify - Token verification (for tests)
 router.get("/verify", (req, res) => {
   const authHeader = req.headers.authorization;
+
   if (!authHeader) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -50,6 +51,23 @@ router.get("/verify", (req, res) => {
     res.status(401).json({ message: "Invalid token" });
   }
 });
+
+/*
+router.get("/verify", (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    res.json({ valid: true, decoded });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+});
+*/
 
 // POST /auth/register - New User Registration
 router.post("/register", async (req, res) => {
