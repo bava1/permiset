@@ -8,7 +8,7 @@ const TestApi: React.FC = () => {
     try {
       const token = localStorage.getItem("auth_token");
   
-      // Добавляем токен в заголовок Authorization
+      // Adding a token to the Authorization header
       const res = await axiosClient.get("/auth/verify", {
         headers: {
           Authorization: `Bearer ${token}`,

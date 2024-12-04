@@ -54,9 +54,15 @@ router.put("/:id", async (req, res) => {
   };
 
   db.data!.users[userIndex] = updatedUser;
-  await db.write();
 
-  res.json(updatedUser);
+  // Проверяем запись в базу данных
+  try {
+    await db.write();
+    res.json(updatedUser);
+  } catch (err) {
+    console.error("Failed to write to the database:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 // Delete user by ID
@@ -70,9 +76,14 @@ router.delete("/:id", async (req, res) => {
   }
 
   db.data!.users.splice(userIndex, 1);
-  await db.write();
 
-  res.status(204).send();
+  try {
+    await db.write();
+    res.status(204).send();
+  } catch (err) {
+    console.error("Failed to write to the database:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 export default router;

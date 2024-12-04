@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { z } from "zod";
-import { useAuth } from "../../context/AuthContext"; // Используем AuthContext
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/router";
 
 // Валидация данных с помощью Zod
 const loginSchema = z.object({
@@ -14,8 +15,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  // Доступ к AuthContext
+  // Accessing AuthContext
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,24 +25,26 @@ export default function Login() {
     setError("");
 
     try {
-      // Валидация данных
+      // Data validation
       const validatedData = loginSchema.parse({ email, password });
 
       setLoading(true);
-      // Вызов метода login из AuthContext
+      // Calling the login method from AuthContext
       await login(validatedData.email, validatedData.password);
 
-      setLoading(false);
+      router.push("/dashboard");
     } catch (err: any) {
-      setLoading(false);
-
-      // Если ошибка валидации
-      if (err.errors) {
-        setError(err.errors[0].message);
+      // Проверяем наличие ошибки 401
+      if (err?.response?.status === 401) {
+        setError("Invalid credentials");
+      } else if (err?.errors) {
+        // Если ошибка пришла от Zod
+        setError(err.errors[0]?.message || "Validation error");
       } else {
-        // Ошибка авторизации
-        setError(err.message || "Invalid credentials");
+        setError("An unexpected error occurred");
       }
+    } finally {
+      setLoading(false); // Сбрасываем состояние загрузки
     }
   };
 

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { z } from "zod";
-import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/router";
 
-// Схема валидации через Zod
+// Validation scheme via Zod
 const registerSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -17,6 +18,7 @@ const registerSchema = z
   });
 
 export default function Register() {
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,6 +28,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,29 +39,28 @@ export default function Register() {
     setError("");
     setSuccess("");
 
+    // Отключаем индикатор загрузки
+  
     try {
       // Валидация через Zod
       const validatedData = registerSchema.parse(formData);
-
+  
       setLoading(true);
-      // Отправка данных на сервер
-      const response = await axios.post("/auth/register", validatedData);
-
+      // Отправка данных на сервер через AuthContext
+      await register(validatedData.name, validatedData.email, validatedData.password);
+  
       setSuccess("Registration successful!");
-      setLoading(false);
-
-      console.log("Response:", response.data);
+      router.push("/auth/login"); // Переход на страницу логина
     } catch (err: any) {
       setLoading(false);
-
-      // Если ошибка валидации
-      if (err.errors) {
-        setError(err.errors[0].message);
-      } else {
-        setError("Registration failed");
-      }
+  
+      // Отображаем сообщение об ошибке
+      setError(err || "Registration failed");
+    } finally {
+      setLoading(false); // Отключаем индикатор загрузки
     }
   };
+  
 
   return (
     <Box sx={{ maxWidth: 400, mx: "auto", mt: 8 }}>
