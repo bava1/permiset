@@ -10,10 +10,9 @@ import { checkPermissions } from "./middlewares/checkPermissions.js";
 import cors from "cors";
 
 const app = express();
-// Настройка CORS
 
 app.use(cors({
-  origin: "http://localhost:3001", // Разрешённый источник
+  origin: "http://localhost:3001", 
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Authorization", "Content-Type"],
 }));

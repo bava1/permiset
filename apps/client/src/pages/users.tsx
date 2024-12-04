@@ -12,9 +12,9 @@ import {
   Paper,
   CircularProgress,
 } from "@mui/material";
-import { useAuth } from "../context/AuthContext"; // Защита маршрута
+import { useAuth } from "../context/AuthContext"; // Route protection
 import ProtectedRoute from "../components/ProtectedRoute";
-import { fetchUsers, createUser } from "../api/users"; // API для работы с пользователями
+import { fetchUsers, createUser } from "../api/users"; // API for working with users
 import AddUserModal from "../components/UserModal";
 
 
@@ -30,9 +30,9 @@ const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [isModalOpen, setModalOpen] = useState<boolean>(false); // Состояние для модального окна
+  const [isModalOpen, setModalOpen] = useState<boolean>(false); // State for modal window
 
-  // Получение данных пользователей
+  // Getting user data
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -50,17 +50,17 @@ const UsersPage: React.FC = () => {
     getUsers();
   }, []);
 
-  // Открыть модальное окно
+  // Open modal window
   const handleOpenModal = () => {
     setModalOpen(true);
   };
 
-  // Закрыть модальное окно
+  // Close modal window
   const handleCloseModal = () => {
     setModalOpen(false);
   };
 
-  // Сохранить нового пользователя
+  // Save new user
   const handleSaveUser = async (userData: {
     name: string;
     email: string;
@@ -69,7 +69,7 @@ const UsersPage: React.FC = () => {
   }) => {
     try {
       const newUser = await createUser(userData);
-      setUsers((prevUsers) => [...prevUsers, newUser]); // Обновление списка пользователей
+      setUsers((prevUsers) => [...prevUsers, newUser]); // Updating the user list
     } catch (err) {
       console.error("Failed to create user:", err);
     } finally {
@@ -98,7 +98,7 @@ const UsersPage: React.FC = () => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleOpenModal} // Открытие модального окна
+                onClick={handleOpenModal} 
               >
                 Add User
               </Button>
@@ -142,11 +142,11 @@ const UsersPage: React.FC = () => {
           </>
         )}
 
-        {/* Модальное окно */}
+        {/* Modal window */}
         <AddUserModal
           open={isModalOpen}
           onClose={handleCloseModal}
-          onSave={handleSaveUser} // Сохранение нового пользователя
+          onSave={handleSaveUser} // Saving a new user
         />
       </Box>
     </ProtectedRoute>

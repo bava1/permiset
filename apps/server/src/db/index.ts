@@ -13,7 +13,7 @@ type DatabaseSchema = {
     id: string;
     name: string;
     email: string;
-    password: string; // Добавляем пароль
+    password: string; 
     role: string;
     status: string;
     createdAt: string;

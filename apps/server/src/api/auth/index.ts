@@ -9,7 +9,7 @@ const router = Router();
 const JWT_SECRET = "supersecretkey"; // It is recommended to store in .env
 const JWT_EXPIRES_IN = "1h";
 
-// POST /auth/login - User authorization
+
 // POST /auth/login - User authorization
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -30,12 +30,12 @@ router.post("/login", async (req, res) => {
 
   // Let's create an access token (short-lived)
   const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN, // Например, "1h" для токена доступа
+    expiresIn: JWT_EXPIRES_IN, 
   });
 
   // Let's create a refresh token (long-lived)
   const refreshToken = jwt.sign({ id: user.id }, JWT_SECRET, {
-    expiresIn: "7d", // Например, "7d" для refresh токена
+    expiresIn: "7d", 
   });
 
   // Save refresh token to the database (optional for added security)
@@ -59,10 +59,10 @@ router.post("/logout", async (req, res) => {
     return res.status(400).json({ message: "Refresh token is required" });
   }
 
-  // Читаем базу данных
+  // Reading the database
   await db.read();
 
-  // Проверяем, есть ли такой refreshToken в базе
+  // We check if there is such a refreshToken in the database
   const tokenIndex = db.data?.refreshTokens.findIndex((token) => token === refreshToken);
 
   if (tokenIndex === undefined || tokenIndex === -1) {
@@ -102,7 +102,7 @@ router.post("/register", async (req, res) => {
   
     await db.read();
 
-    // Проверка на уникальность email
+    // Checking email uniqueness
     const existingUser = db.data?.users.find((user) => user.email === email);
     if (existingUser) {
       return res.status(400).json({ message: "User with this email already exists" });
@@ -121,7 +121,7 @@ router.post("/register", async (req, res) => {
 
     db.data?.users.push(newUser);
 
-    // Проверяем запись в базу данных
+    // Checking the entry in the database
     try {
       await db.write();
       res.status(201).json(newUser);

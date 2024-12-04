@@ -55,7 +55,7 @@ router.put("/:id", async (req, res) => {
 
   db.data!.users[userIndex] = updatedUser;
 
-  // Проверяем запись в базу данных
+  // Checking the entry in the database
   try {
     await db.write();
     res.json(updatedUser);

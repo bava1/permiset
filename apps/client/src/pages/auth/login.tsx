@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 
-// Валидация данных с помощью Zod
+// Data Validation with Zod
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(1, "Password is required"),
@@ -23,30 +23,37 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
+  
     try {
       // Data validation
       const validatedData = loginSchema.parse({ email, password });
-
+  
       setLoading(true);
-      // Calling the login method from AuthContext
+  
+      // Call the login method from AuthContext
       await login(validatedData.email, validatedData.password);
-
+  
+      // Go to Dashboard page after successful login
       router.push("/dashboard");
     } catch (err: any) {
-      // Проверяем наличие ошибки 401
-      if (err?.response?.status === 401) {
-        setError("Invalid credentials");
-      } else if (err?.errors) {
-        // Если ошибка пришла от Zod
+      setLoading(false); // We guarantee a boot reset
+  
+      // If the error came from the API
+      if (err?.message === "Invalid credentials") {
+        setError("Invalid credentials. Please try again.");
+      } 
+      // If validation error
+      else if (err.errors) {
         setError(err.errors[0]?.message || "Validation error");
-      } else {
+      } 
+      // If an unknown error occurs
+      else {
+        console.error("An unexpected error occurred:", err);
         setError("An unexpected error occurred");
       }
-    } finally {
-      setLoading(false); // Сбрасываем состояние загрузки
     }
   };
+  
 
   return (
     <Box sx={{ maxWidth: 400, mx: "auto", mt: 8 }}>

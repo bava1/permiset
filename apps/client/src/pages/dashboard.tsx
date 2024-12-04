@@ -7,11 +7,11 @@ import Link from "next/link";
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
-  const router = useRouter(); // Хук для маршрутизации
+  const router = useRouter(); // Hook for routing
 
   const handleLogout = async () => {
-    await logout(); // Вызываем logout из AuthContext
-    router.push("/auth/login"); // Перенаправляем на страницу логина
+    await logout(); // Call logout from AuthContext
+    router.push("/auth/login"); // Redirect to the login page
   };
 
   return (

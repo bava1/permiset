@@ -26,7 +26,7 @@ axiosClient.interceptors.response.use(
         if (refreshToken) {
           const { data } = await axiosClient.post("/auth/refresh", { refreshToken });
           localStorage.setItem("auth_token", data.token); // Updating the token
-          error.config.headers.Authorization = `Bearer ${data.token}`; // Повторяем запрос
+          error.config.headers.Authorization = `Bearer ${data.token}`;
           return axiosClient.request(error.config);
         }
       } catch (refreshError) {

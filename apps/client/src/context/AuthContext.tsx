@@ -9,7 +9,7 @@ interface User {
   email: string;
 }
 
-// Типы для контекста
+// Types for context
 interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -34,25 +34,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setToken(token);
       setUser(user);
-      localStorage.setItem("auth_token", token); // Сохраняем токен
-      localStorage.setItem("refresh_token", refreshToken); // Сохраняем refresh токен
+      localStorage.setItem("auth_token", token); // Save the token
+      localStorage.setItem("refresh_token", refreshToken); // Save refresh token
     } catch (err) {
       console.error("Login failed:", err);
       throw new Error("Invalid credentials");
     }
   };
   
-    // Новый метод: регистрация
+    // New method: registration
     const register = async (name: string, email: string, password: string): Promise<void> => {
       try {
         await axiosClient.post("/auth/register", { name, email, password });
     
-        // После успешной регистрации выполняем автоматический вход
+        // After successful registration, we perform automatic login
         await login(email, password);
       } catch (err: any) {
         console.error("Registration failed:", err);
     
-        // Возвращаем сообщение об ошибке вместо выбрасывания
+        // Return an error message instead of throwing it
         return Promise.reject(
           err.response?.data?.message || "An error occurred during registration"
         );
@@ -77,10 +77,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const refreshToken = localStorage.getItem("refresh_token");
   
-      // Отправляем refreshToken на сервер для удаления
+      // Send refreshToken to server for deletion
       await axiosClient.post("/auth/logout", { refreshToken });
   
-      // Очищаем клиентские данные
+      // Clearing client data
       setUser(null);
       setToken(null);
       localStorage.removeItem("auth_token");

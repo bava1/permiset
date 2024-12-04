@@ -38,26 +38,24 @@ export default function Register() {
     e.preventDefault();
     setError("");
     setSuccess("");
-
-    // Отключаем индикатор загрузки
   
     try {
-      // Валидация через Zod
+      // Validation via Zod
       const validatedData = registerSchema.parse(formData);
   
       setLoading(true);
-      // Отправка данных на сервер через AuthContext
+      // Sending data to the server via AuthContext
       await register(validatedData.name, validatedData.email, validatedData.password);
   
       setSuccess("Registration successful!");
-      router.push("/auth/login"); // Переход на страницу логина
+      router.push("/auth/login"); 
     } catch (err: any) {
       setLoading(false);
   
-      // Отображаем сообщение об ошибке
+      // Displaying an error message
       setError(err || "Registration failed");
     } finally {
-      setLoading(false); // Отключаем индикатор загрузки
+      setLoading(false); // Disable the loading indicator
     }
   };
   

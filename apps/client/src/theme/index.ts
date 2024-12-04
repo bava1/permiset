@@ -3,17 +3,17 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2", // Основной цвет
+      main: "#1976d2", // Primary color
     },
     secondary: {
-      main: "#ff4081", // Второстепенный цвет
+      main: "#ff4081", // Secondary color
     },
     background: {
-      default: "#f5f5f5", // Фон приложения
+      default: "#f5f5f5", // Application background
     },
   },
   typography: {
-    fontFamily: "'Roboto', 'Arial', sans-serif", // Настройка шрифтов
+    fontFamily: "'Roboto', 'Arial', sans-serif",
     h1: {
       fontSize: "2.5rem",
       fontWeight: 700,
