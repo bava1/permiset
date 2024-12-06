@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -11,55 +11,121 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 
-interface AddUserModalProps {
+interface UserModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (userData: {
+    id?: string;
     name: string;
     email: string;
     role: string;
     status: string;
-  }) => void;
+    password?: string;
+  }) => Promise<void>;
+  initialData?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    status: string;
+  };
+  mode: "add" | "edit";
 }
 
-const AddUserModal: React.FC<AddUserModalProps> = ({ open, onClose, onSave }) => {
+const UserModal: React.FC<UserModalProps> = ({
+  open,
+  onClose,
+  onSave,
+  initialData,
+  mode,
+}) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "User", // Default role
-    status: "active", // Default status
+    id: initialData?.id || "",
+    name: initialData?.name || "",
+    email: initialData?.email || "",
+    role: initialData?.role || "User",
+    status: initialData?.status || "active",
+    password: "",
+    confirmPassword: "",
   });
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData({
+        ...initialData,
+        password: "",
+        confirmPassword: "",
+      });
+    }
+  }, [initialData, mode]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSelectChange = (e: SelectChangeEvent<string>) => {
-    const { name, value } = e.target;
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    const { name, value } = event.target;
     if (name) {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = () => {
-    onSave(formData);
-    setFormData({
-      name: "",
-      email: "",
-      role: "User",
-      status: "active",
-    });
-    onClose();
+  const handleSubmit = async () => {
+    setError("");
+  
+    // Проверка совпадения паролей только при их наличии
+    if (formData.password && formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+  
+    try {
+      setLoading(true);
+  
+      const payload: any = {
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
+        status: formData.status,
+      };
+      if (formData.password) payload.password = formData.password; // Передаём пароль только если он указан
+      if (mode === "edit" && initialData?.id) payload.id = initialData.id;
+  
+      await onSave(payload);
+  
+      setFormData({
+        id: "",
+        name: "",
+        email: "",
+        role: "User",
+        status: "active",
+        password: "",
+        confirmPassword: "",
+      });
+      onClose();
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New User</DialogTitle>
+      <DialogTitle>{mode === "add" ? "Add New User" : "Edit User"}</DialogTitle>
       <DialogContent>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
         <TextField
           label="Name"
           name="name"
@@ -76,7 +142,30 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, onClose, onSave }) =>
           fullWidth
           margin="normal"
           type="email"
+          disabled={mode === "edit"}
         />
+        {mode === "add" && (
+          <>
+            <TextField
+              label="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              type="password"
+            />
+            <TextField
+              label="Confirm Password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              type="password"
+            />
+          </>
+        )}
         <FormControl fullWidth margin="normal">
           <InputLabel>Role</InputLabel>
           <Select
@@ -102,15 +191,20 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, onClose, onSave }) =>
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onClose} color="secondary" disabled={loading}>
           Cancel
         </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
-          Save
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          {loading ? "Saving..." : "Save"}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddUserModal;
+export default UserModal;

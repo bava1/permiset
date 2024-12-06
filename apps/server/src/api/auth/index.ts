@@ -94,42 +94,36 @@ router.get("/verify", (req, res) => {
   }
 });
 
-
-
 // POST /auth/register - New User Registration
 router.post("/register", async (req, res) => {
-    const { name, email, password, role, status } = req.body;
-  
-    await db.read();
+  const { name, email, password, role = "User", status = "active" } = req.body;
 
-    // Checking email uniqueness
-    const existingUser = db.data?.users.find((user) => user.email === email);
-    if (existingUser) {
-      return res.status(400).json({ message: "User with this email already exists" });
-    }
-  
-    const newUser = {
-      id: Date.now().toString(),
-      name,
-      email,
-      password: await bcrypt.hash(password, 10), // Hashing the password
-      role: "User",
-      status: "active",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+  await db.read();
 
-    db.data?.users.push(newUser);
+  // Проверка на уникальность email
+  const existingUser = db.data?.users.find((user) => user.email === email);
+  if (existingUser) {
+    return res.status(400).json({ message: "User with this email already exists" });
+  }
 
-    // Checking the entry in the database
-    try {
-      await db.write();
-      res.status(201).json(newUser);
-    } catch (err) {
-      console.error("Failed to write to the database:", err);
-      res.status(500).json({ message: "Internal server error" });
-    }
+  // Создание нового пользователя
+  const newUser = {
+    id: Date.now().toString(),
+    name,
+    email,
+    password: await bcrypt.hash(password, 10),
+    role,
+    status,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  db.data?.users.push(newUser);
+  await db.write();
+
+  res.status(201).json(newUser);
 });
+
 
 // POST /auth/refresh - Token refresh
 router.post("/refresh", async (req, res) => {

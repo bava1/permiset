@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 
-// Validation scheme via Zod
+// Validation schema with Zod
 const registerSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -26,7 +26,6 @@ export default function Register() {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -36,29 +35,31 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-  
+    setError(""); // Очищаем ошибки перед новой попыткой
+
     try {
-      // Validation via Zod
+      // Validate input
       const validatedData = registerSchema.parse(formData);
-  
+
       setLoading(true);
-      // Sending data to the server via AuthContext
+      // Call the register method from AuthContext
       await register(validatedData.name, validatedData.email, validatedData.password);
-  
-      setSuccess("Registration successful!");
-      router.push("/auth/login"); 
+
+      // Redirect to login page after successful registration
+      router.push("/auth/login");
     } catch (err: any) {
       setLoading(false);
-  
-      // Displaying an error message
-      setError(err || "Registration failed");
-    } finally {
-      setLoading(false); // Disable the loading indicator
+
+      if (err instanceof ZodError) {
+        setError(err.errors[0]?.message || "Validation error");
+      } else if (err.message) {
+        setError(err.message); // Отображаем сообщение от сервера
+      } else {
+        console.error("Unexpected error during registration:", err);
+        setError("An unexpected error occurred. Please try again.");
+      }
     }
   };
-  
 
   return (
     <Box sx={{ maxWidth: 400, mx: "auto", mt: 8 }}>
@@ -66,8 +67,7 @@ export default function Register() {
         Register
       </Typography>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+      {error && <Alert severity="error">{error}</Alert>}
 
       <form onSubmit={handleSubmit}>
         <TextField

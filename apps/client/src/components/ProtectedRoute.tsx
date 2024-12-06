@@ -8,22 +8,34 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAuthLoading } = useAuth();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
 
+  /*
   useEffect(() => {
     if (!isAuthenticated) {
+      router.replace("/auth/login");
+    }
+  }, [isAuthLoading, isAuthenticated, router]);
+  */
+  useEffect(() => {
+    console.log("isAuthenticated:", isAuthenticated);
+    if (!isAuthenticated) {
+      console.log("Redirecting to /auth/login");
       router.push("/auth/login");
-    } else {
-      setLoading(false);
     }
   }, [isAuthenticated, router]);
 
-  // Show spinner during authorization check
-  if (loading) {
+  if (isAuthLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -31,6 +43,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   return <>{children}</>;
 };
+
 
 export default ProtectedRoute;
 

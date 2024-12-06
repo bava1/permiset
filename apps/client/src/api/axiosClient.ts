@@ -19,25 +19,46 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      // If the token has expired, try refreshing the token
-      try {
-        const refreshToken = localStorage.getItem("refresh_token");
-        if (refreshToken) {
-          const { data } = await axiosClient.post("/auth/refresh", { refreshToken });
-          localStorage.setItem("auth_token", data.token); // Updating the token
-          error.config.headers.Authorization = `Bearer ${data.token}`;
-          return axiosClient.request(error.config);
-        }
-      } catch (refreshError) {
-        console.error("Unable to refresh token:", refreshError);
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("refresh_token");
-      }
-    }
+    console.error("Interceptor error:", error);
+    // Логика обработки ошибок
     return Promise.reject(error);
   }
 );
 
+// Interceptor for handling responses
+/*
+axiosClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      const refreshToken = localStorage.getItem("refresh_token");
+
+      if (!refreshToken) {
+        console.warn("No refresh token available, logout.");
+        return Promise.reject(error);
+      }
+
+      try {
+        const { data } = await axiosClient.post("/auth/refresh", { refreshToken });
+        localStorage.setItem("auth_token", data.token);
+
+        // Обновляем токен в запросе и повторяем его
+        error.config.headers.Authorization = `Bearer ${data.token}`;
+        return axiosClient.request(error.config);
+      } catch (refreshError) {
+        console.error("Failed to refresh token:", refreshError);
+
+        // Очищаем данные при неудачном обновлении токена
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("refresh_token");
+
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+*/
 
 export default axiosClient;

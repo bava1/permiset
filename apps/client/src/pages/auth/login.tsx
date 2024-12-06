@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 
@@ -20,40 +20,33 @@ export default function Login() {
   // Accessing AuthContext
   const { login } = useAuth();
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "email") setEmail(value);
+    if (name === "password") setPassword(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-  
+    setError(""); // Очищаем ошибки перед новой попыткой
+
     try {
-      // Data validation
-      const validatedData = loginSchema.parse({ email, password });
-  
       setLoading(true);
-  
-      // Call the login method from AuthContext
+      const validatedData = loginSchema.parse({ email, password });
       await login(validatedData.email, validatedData.password);
-  
-      // Go to Dashboard page after successful login
-      router.push("/dashboard");
+      router.push("/dashboard"); // Переход на страницу Dashboard
     } catch (err: any) {
-      setLoading(false); // We guarantee a boot reset
-  
-      // If the error came from the API
-      if (err?.message === "Invalid credentials") {
-        setError("Invalid credentials. Please try again.");
-      } 
-      // If validation error
-      else if (err.errors) {
+      if (err instanceof ZodError) {
         setError(err.errors[0]?.message || "Validation error");
-      } 
-      // If an unknown error occurs
-      else {
-        console.error("An unexpected error occurred:", err);
-        setError("An unexpected error occurred");
+      } else if (err.message === "Invalid credentials") {
+        setError("Invalid credentials. Please try again.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
       }
+    } finally {
+      setLoading(false); // Гарантируем сброс загрузки
     }
   };
-  
 
   return (
     <Box sx={{ maxWidth: 400, mx: "auto", mt: 8 }}>
@@ -67,16 +60,18 @@ export default function Login() {
         <TextField
           label="Email"
           type="email"
+          name="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChange}
           fullWidth
           margin="normal"
         />
         <TextField
           label="Password"
           type="password"
+          name="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleChange}
           fullWidth
           margin="normal"
         />
