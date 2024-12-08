@@ -13,8 +13,9 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ProtectedRoute from "../components/ProtectedRoute";
-import { fetchUsers, createUser, updateUser } from "../api/users";
+import { fetchUsers, createUser, updateUser, deleteUser } from "../api/users";
 import UserModal from "../components/UserModal";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 interface User {
   id: string;
@@ -29,6 +30,7 @@ const UsersPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -71,49 +73,73 @@ const UsersPage: React.FC = () => {
     setError("");
   };
 
-  // Унифицированный обработчик для сохранения или редактирования пользователя
+  // Открытие диалога удаления
+  const openDeleteDialog = (user: User) => {
+    setSelectedUser(user);
+    setDeleteDialogOpen(true);
+  };
 
+  // Закрытие диалога удаления
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setSelectedUser(null);
+  };
 
-    // Унифицированный обработчик для добавления/редактирования
-    const handleSaveUserOrEditUser = async (userData: {
-      id?: string;
-      name: string;
-      email: string;
-      role: string;
-      status: string;
-    }) => {
-      try {
-        if (userData.id) {
-          // Редактирование
-          await updateUser(userData.id, {
-            name: userData.name,
-            email: userData.email,
-            role: userData.role,
-            status: userData.status,
-          });
-        } else {
-          // Добавление нового пользователя
-          await createUser({
-            name: userData.name,
-            email: userData.email,
-            role: userData.role,
-            status: userData.status,
-          });
-        }
-        await loadUsers();
-        handleCloseModal();
-      } catch (err: any) {
-        const errorMessage =
-          err.response?.data?.message ||
-          "Failed to save user. Please try again.";
-        if (err.response?.status === 400 || err.response?.status === 409) {
-          setError("User with this email already exists.");
-        } else {
-          console.error("Failed to save user:", errorMessage);
-          setError(errorMessage);
-        }
+  // Унифицированный обработчик для добавления/редактирования пользователя
+  const handleSaveUserOrEditUser = async (userData: {
+    id?: string;
+    name: string;
+    email: string;
+    role: string;
+    status: string;
+  }) => {
+    try {
+      if (userData.id) {
+        // Редактирование
+        await updateUser(userData.id, {
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          status: userData.status,
+        });
+      } else {
+        // Добавление нового пользователя
+        await createUser({
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          status: userData.status,
+        });
       }
-    };
+      await loadUsers();
+      handleCloseModal();
+    } catch (err: any) {
+      const errorMessage =
+        err.response?.data?.message ||
+        "Failed to save user. Please try again.";
+      if (err.response?.status === 400 || err.response?.status === 409) {
+        setError("User with this email already exists.");
+      } else {
+        console.error("Failed to save user:", errorMessage);
+        setError(errorMessage);
+      }
+    }
+  };
+
+  // Удаление пользователя
+  const handleDeleteUser = async () => {
+    if (!selectedUser) return;
+    try {
+      await deleteUser(selectedUser.id);
+      await loadUsers(); // Перезагрузка списка пользователей
+      handleCloseDeleteDialog();
+    } catch (err: any) {
+      const errorMessage =
+        err.response?.data?.message || "Failed to delete user.";
+      console.error("Failed to delete user:", errorMessage);
+      setError(errorMessage);
+    }
+  };
 
   return (
     <ProtectedRoute>
@@ -170,6 +196,7 @@ const UsersPage: React.FC = () => {
                           variant="outlined"
                           color="error"
                           sx={{ ml: 1 }}
+                          onClick={() => openDeleteDialog(user)}
                         >
                           Delete
                         </Button>
@@ -182,12 +209,25 @@ const UsersPage: React.FC = () => {
           </Box>
         )}
 
+        {/* Модальное окно для добавления/редактирования */}
         <UserModal
           open={isModalOpen}
           onClose={handleCloseModal}
           onSave={handleSaveUserOrEditUser}
           initialData={modalMode === "edit" ? selectedUser || undefined : undefined}
           mode={modalMode}
+        />
+
+        {/* Диалог удаления */}
+        <ConfirmDialog
+          open={isDeleteDialogOpen}
+          onClose={handleCloseDeleteDialog}
+          onConfirm={handleDeleteUser}
+          title="Confirm Deletion"
+          content={`Are you sure you want to delete user "${selectedUser?.name}" (${selectedUser?.email})?`}
+          confirmText="Delete"
+          cancelText="No"
+          confirmColor="error"
         />
       </Box>
     </ProtectedRoute>

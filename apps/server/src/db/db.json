@@ -52,16 +52,6 @@
   ],
   "users": [
     {
-      "id": "1733128809610",
-      "name": "John Doe 44555555555555555555555555555555555",
-      "email": "john.doe@example.com",
-      "password": "$2b$10$EJy8B2ZwiFY8DfOefAkr4Ot.I.rWbqYeOgwPD1rvH1mhXUt0SQEU2",
-      "role": "Administrator",
-      "status": "inactive",
-      "createdAt": "2024-12-02T08:40:09.610Z",
-      "updatedAt": "2024-12-06T15:08:17.274Z"
-    },
-    {
       "id": "1733132535097",
       "name": "Valde Mort",
       "email": "john.doe@example.com",
@@ -82,16 +72,6 @@
       "updatedAt": "2024-12-02T09:43:03.554Z"
     },
     {
-      "id": "1733479674435",
-      "name": "bava123",
-      "email": "john.doe@example.com",
-      "role": "User",
-      "status": "active",
-      "password": "123456",
-      "createdAt": "2024-12-06T10:07:54.435Z",
-      "updatedAt": "2024-12-06T10:07:54.435Z"
-    },
-    {
       "id": "1733479836166",
       "name": "bava123",
       "email": "test@test.com",
@@ -100,45 +80,6 @@
       "status": "active",
       "createdAt": "2024-12-06T10:10:36.226Z",
       "updatedAt": "2024-12-06T10:10:36.226Z"
-    },
-    {
-      "id": "1733490297849",
-      "name": "Bava ",
-      "email": "testq@test.com",
-      "password": "$2b$10$QNPIBJBk.oLOP/7lAnM8yO/BFghp1ZKGcN2IKdgBABsOk8L5APAmy",
-      "role": "User",
-      "status": "active",
-      "createdAt": "2024-12-06T13:04:57.912Z",
-      "updatedAt": "2024-12-06T13:04:57.912Z"
-    },
-    {
-      "id": "1733490384160",
-      "name": "Bava New",
-      "email": "teste@test.com",
-      "password": "$2b$10$ReI8QzC/1pwT0.Sf8hH8N.dfg.CKV8urcUQ9E1BfP0OPVjzRvfAZ.",
-      "role": "User",
-      "status": "active",
-      "createdAt": "2024-12-06T13:06:24.219Z",
-      "updatedAt": "2024-12-06T13:06:24.219Z"
-    },
-    {
-      "id": "1733490700176",
-      "name": "Bava New 789",
-      "email": "testss@test.com",
-      "password": "$2b$10$6j26QeouGrwZcsHm9lEggu8j7dsIA6S2qqr4VcHoktn6FdvHEAMrK",
-      "role": "User",
-      "status": "active",
-      "createdAt": "2024-12-06T13:11:40.240Z",
-      "updatedAt": "2024-12-06T13:11:40.240Z"
-    },
-    {
-      "id": "1733497726525",
-      "name": "Bava Nsssssssssssssssssssss",
-      "email": "test@test.com",
-      "role": "Administrator",
-      "status": "active",
-      "createdAt": "2024-12-06T15:08:46.525Z",
-      "updatedAt": "2024-12-06T15:08:46.525Z"
     }
   ],
   "auditLogs": [],
@@ -189,6 +130,8 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM0ODk3NDcsImV4cCI6MTczNDA5NDU0N30.j2uuya58wYLBZ9ch1X3WE5tozhus14mxwqN82-MuvTE",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0ODk5ODk4NzMiLCJpYXQiOjE3MzM0OTAwMDYsImV4cCI6MTczNDA5NDgwNn0.LPglAforqT722MiQoyT2tVi_cq9Cggub_-6rJZjBAYk",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM0OTAzNDksImV4cCI6MTczNDA5NTE0OX0.w3oyhImA7tZcpwgNQraceEQAgQBp5uX5M3Htx4bQp04",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM0OTU5NDYsImV4cCI6MTczNDEwMDc0Nn0.c5NzjMLT6zEwFCBOZcOCDpOMXxAHwQq7HD6sGGCHYUE"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM0OTU5NDYsImV4cCI6MTczNDEwMDc0Nn0.c5NzjMLT6zEwFCBOZcOCDpOMXxAHwQq7HD6sGGCHYUE",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM1NjY5NjUsImV4cCI6MTczNDE3MTc2NX0.i2rURXWRzNW1EF12vk1iIaXE36fQFD5YqKkQjE6YcXY",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM2NzY5NjAsImV4cCI6MTczNDI4MTc2MH0.mcbH2xZjV3QyWb3tlQP28HvYGdbY6WZZqWxi-nLZyOY"
   ]
 }
