@@ -34,17 +34,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { token, refreshToken, user } = await apiLogin(email, password);
   
-      // Сохранение токенов
+      // Saving tokens
       localStorage.setItem("auth_token", token);
       localStorage.setItem("refresh_token", refreshToken);
   
-      // Обновление состояния
+      // Status update
       setToken(token);
       setUser(user);
     } catch (err: any) {
       console.error("Login failed:", err);
   
-      // Очищаем токены при ошибке
+      // Clearing tokens on error
       localStorage.removeItem("auth_token");
       localStorage.removeItem("refresh_token");
   
@@ -68,14 +68,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await axiosClient.post("/auth/register", { name, email, password, role, status });
   
-      // После успешной регистрации выполняем автоматический вход, только если role и status не заданы
+      // After successful registration, we perform automatic login only if role and status are not specified
       if (!role && !status) {
         await login(email, password);
       }
     } catch (err: any) {
       console.error("Registration failed:", err);
   
-      // Обработка ошибок
       if (err.response?.status === 400 && err.response.data?.message) {
         throw new Error(err.response.data.message);
       } else {

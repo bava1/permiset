@@ -79,7 +79,7 @@ const UserModal: React.FC<UserModalProps> = ({
   const handleSubmit = async () => {
     setError("");
   
-    // Проверка совпадения паролей только при их наличии
+    // Check for password matches only if they exist
     if (formData.password && formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
       return;
@@ -94,7 +94,7 @@ const UserModal: React.FC<UserModalProps> = ({
         role: formData.role,
         status: formData.status,
       };
-      if (formData.password) payload.password = formData.password; // Передаём пароль только если он указан
+      if (formData.password) payload.password = formData.password; 
       if (mode === "edit" && initialData?.id) payload.id = initialData.id;
   
       await onSave(payload);

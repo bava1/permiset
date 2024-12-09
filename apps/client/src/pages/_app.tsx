@@ -10,7 +10,7 @@ import MainLayout from "../components/MainLayout";
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  // Список маршрутов, которые не требуют аутентификации
+  // List of routes that do not require authentication
   const unprotectedRoutes = ["/auth/login", "/auth/register", "/page404"];
   const isUnprotectedRoute = unprotectedRoutes.includes(router.pathname);
 

@@ -26,7 +26,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return null; // Если не аутентифицирован и редирект не завершился
+    return null; // If not authenticated and redirect not completed
   }
 
   return <>{children}</>;

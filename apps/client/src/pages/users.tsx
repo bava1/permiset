@@ -11,7 +11,16 @@ import {
   TableRow,
   Paper,
   CircularProgress,
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  IconButton,
+  TablePagination,
 } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { fetchUsers, createUser, updateUser, deleteUser } from "../api/users";
 import UserModal from "../components/UserModal";
@@ -27,6 +36,7 @@ interface User {
 
 const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -34,13 +44,29 @@ const UsersPage: React.FC = () => {
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  // Загрузка списка пользователей
+  // Fields for filtering
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<string>("");
+
+  // Pagination
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(8);
+
+  // Loading user list
   const loadUsers = async () => {
     setError("");
     try {
       setLoading(true);
       const data = await fetchUsers();
-      setUsers(data);
+  
+      const sortedUsers = data.sort((a: any, b: any) => {
+        const dateA = new Date(a.createdAt || a.id).getTime();
+        const dateB = new Date(b.createdAt || b.id).getTime();
+        return dateB - dateA; // Sort by descending order of creation
+      });
+  
+      setUsers(sortedUsers);
+      setFilteredUsers(sortedUsers);
     } catch (err: any) {
       console.error("Failed to fetch users:", err);
       setError("Failed to load users");
@@ -48,44 +74,72 @@ const UsersPage: React.FC = () => {
       setLoading(false);
     }
   };
+  
+  
 
   useEffect(() => {
     loadUsers();
   }, []);
 
-  // Открытие модального окна для добавления
+  // Updating the list when changing filters
+  useEffect(() => {
+    let updatedUsers = users;
+
+    if (searchQuery) {
+      updatedUsers = updatedUsers.filter((user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (selectedRole) {
+      updatedUsers = updatedUsers.filter((user) => user.role === selectedRole);
+    }
+
+    setFilteredUsers(updatedUsers);
+  }, [searchQuery, selectedRole, users]);
+
+  const resetSearch = () => {
+    setSearchQuery("");
+  };
+
+  // Pagination handlers
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // Modal and user deletion handlers
   const openAddModal = () => {
     setSelectedUser(null);
     setModalMode("add");
     setModalOpen(true);
   };
 
-  // Открытие модального окна для редактирования
   const openEditModal = (user: User) => {
     setSelectedUser(user);
     setModalMode("edit");
     setModalOpen(true);
   };
 
-  // Закрытие модального окна
   const handleCloseModal = () => {
     setModalOpen(false);
     setError("");
   };
 
-  // Открытие диалога удаления
   const openDeleteDialog = (user: User) => {
     setSelectedUser(user);
     setDeleteDialogOpen(true);
   };
 
-  // Закрытие диалога удаления
   const handleCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
     setSelectedUser(null);
   };
 
-  // Унифицированный обработчик для добавления/редактирования пользователя
   const handleSaveUserOrEditUser = async (userData: {
     id?: string;
     name: string;
@@ -95,7 +149,6 @@ const UsersPage: React.FC = () => {
   }) => {
     try {
       if (userData.id) {
-        // Редактирование
         await updateUser(userData.id, {
           name: userData.name,
           email: userData.email,
@@ -103,7 +156,6 @@ const UsersPage: React.FC = () => {
           status: userData.status,
         });
       } else {
-        // Добавление нового пользователя
         await createUser({
           name: userData.name,
           email: userData.email,
@@ -126,12 +178,11 @@ const UsersPage: React.FC = () => {
     }
   };
 
-  // Удаление пользователя
   const handleDeleteUser = async () => {
     if (!selectedUser) return;
     try {
       await deleteUser(selectedUser.id);
-      await loadUsers(); // Перезагрузка списка пользователей
+      await loadUsers();
       handleCloseDeleteDialog();
     } catch (err: any) {
       const errorMessage =
@@ -140,6 +191,12 @@ const UsersPage: React.FC = () => {
       setError(errorMessage);
     }
   };
+
+  // Displaying a table
+  const paginatedUsers = filteredUsers.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <ProtectedRoute>
@@ -155,12 +212,46 @@ const UsersPage: React.FC = () => {
           </Typography>
         ) : (
           <Box>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-              <Button variant="contained" color="primary" onClick={openAddModal}>
+            {/* Filters */}
+            <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+              <TextField
+                label="Search by Name"
+                variant="outlined"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                InputProps={{
+                  endAdornment: searchQuery ? (
+                    <InputAdornment position="end">
+                      <IconButton onClick={resetSearch} size="small">
+                        <ClearIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null,
+                }}
+              />
+              <FormControl sx={{ minWidth: 150 }}>
+                <InputLabel>Role</InputLabel>
+                <Select
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value)}
+                >
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="Administrator">Administrator</MenuItem>
+                  <MenuItem value="User">User</MenuItem>
+                  <MenuItem value="Manager">Manager</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={openAddModal}
+                sx={{ ml: "auto" }}
+              >
                 Add User
               </Button>
             </Box>
 
+            {/* Table */}
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -169,17 +260,17 @@ const UsersPage: React.FC = () => {
                     <TableCell>Email</TableCell>
                     <TableCell>Role</TableCell>
                     <TableCell>Status</TableCell>
-                    <TableCell>Actions</TableCell>
+                    <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((user) => (
+                  {paginatedUsers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>{user.name}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>{user.status}</TableCell>
-                      <TableCell>
+                      <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>
                         <Button
                           size="small"
                           variant="outlined"
@@ -203,10 +294,23 @@ const UsersPage: React.FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+
+            {/* Pagination */}
+            {filteredUsers.length > 8 && (
+              <TablePagination
+                component="div"
+                count={filteredUsers.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[8, 16, 24]}
+              />
+            )}
           </Box>
         )}
 
-        {/* Модальное окно для добавления/редактирования */}
+        {/* Modal window for adding/editing */}
         <UserModal
           open={isModalOpen}
           onClose={handleCloseModal}
@@ -215,7 +319,7 @@ const UsersPage: React.FC = () => {
           mode={modalMode}
         />
 
-        {/* Диалог удаления */}
+        {/* Delete dialog */}
         <ConfirmDialog
           open={isDeleteDialogOpen}
           onClose={handleCloseDeleteDialog}
