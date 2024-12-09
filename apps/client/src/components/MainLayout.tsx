@@ -1,74 +1,144 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   AppBar,
   Box,
   CssBaseline,
   Drawer,
+  IconButton,
   List,
-  ListItem,
+  ListItemButton,
+  ListItemIcon,
   ListItemText,
   Toolbar,
   Typography,
+  Button,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import ArticleIcon from "@mui/icons-material/Article";
+import DescriptionIcon from "@mui/icons-material/Description";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { useRouter } from "next/router";
+import { useAuth } from "../context/AuthContext";
 
 const drawerWidth = 240;
 
-const navItems = [
-  { text: "Home", path: "/" },
-  { text: "Users", path: "/users" },
-  { text: "Issues", path: "/issues" },
-  { text: "Blog", path: "/blog" },
-  { text: "Docs", path: "/docs" },
-  { text: "Settings", path: "/setting" },
-];
-
 interface MainLayoutProps {
-  children: ReactNode; // Указываем, что MainLayout принимает детей
+  children: ReactNode;
 }
+
+const NAV_ITEMS = [
+  { label: "Home", icon: <HomeIcon />, path: "/" },
+  { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+  { label: "Users", icon: <PeopleIcon />, path: "/users" },
+  { label: "Issues", icon: <BugReportIcon />, path: "/issues" },
+  { label: "Blog", icon: <ArticleIcon />, path: "/blog" },
+  { label: "Docs", icon: <DescriptionIcon />, path: "/docs" },
+  { label: "Settings", icon: <SettingsIcon />, path: "/setting" },
+];
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const router = useRouter();
+  const { logout } = useAuth();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Экран меньше 996px
+
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(!isSmallScreen); // Драйвер открыт только для больших экранов
 
   const handleNavigation = (path: string) => {
     router.push(path);
+    if (isSmallScreen) {
+      setDrawerOpen(false); // Закрываем Drawer на мобильных устройствах после навигации
+    }
   };
+
+  const toggleDrawer = () => {
+    setDrawerOpen((prev) => !prev);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/auth/login");
+  };
+
+  const drawerContent = (
+    <List>
+      {NAV_ITEMS.map((item) => (
+        <ListItemButton
+          key={item.path}
+          onClick={() => handleNavigation(item.path)}
+          sx={{
+            backgroundColor: router.pathname === item.path ? "rgba(0, 0, 0, 0.08)" : "transparent",
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+            },
+          }}
+        >
+          <ListItemIcon>{item.icon}</ListItemIcon>
+          <ListItemText primary={item.label} />
+        </ListItemButton>
+      ))}
+    </List>
+  );
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Permiset
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+      >
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          {/* Показываем кнопку меню только на маленьких экранах */}
+          {isSmallScreen && (
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={toggleDrawer}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="h6" noWrap>
+            PermiSET
           </Typography>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
-        variant="permanent"
+        variant={isSmallScreen ? "temporary" : "persistent"}
+        open={drawerOpen}
+        onClose={toggleDrawer} // Закрытие для маленьких экранов
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box" },
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            {navItems.map((item) => (
-              <ListItem
-                button
-                key={item.text}
-                onClick={() => handleNavigation(item.path)}
-                selected={router.pathname === item.path}
-              >
-                <ListItemText primary={item.text} />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+        {drawerContent}
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          transition: "margin 0.3s",
+        }}
+      >
         <Toolbar />
         {children}
       </Box>

@@ -143,11 +143,8 @@ const UsersPage: React.FC = () => {
 
   return (
     <ProtectedRoute>
-      <Box sx={{ padding: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          User Management
-        </Typography>
-
+      <Box>
+        <h1>Users</h1>
         {loading ? (
           <Box sx={{ textAlign: "center", marginTop: 4 }}>
             <CircularProgress />

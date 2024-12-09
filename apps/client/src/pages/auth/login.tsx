@@ -34,7 +34,7 @@ export default function Login() {
       setLoading(true);
       const validatedData = loginSchema.parse({ email, password });
       await login(validatedData.email, validatedData.password);
-      router.push("/dashboard"); // Переход на страницу Dashboard
+      router.push("/"); // Перенаправляем на главную страницу
     } catch (err: any) {
       if (err instanceof ZodError) {
         setError(err.errors[0]?.message || "Validation error");

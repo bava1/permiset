@@ -1,33 +1,33 @@
-import { useRouter } from "next/router";
 import { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import { AuthProvider } from "../context/AuthContext";
-import MainLayout from "../components/MainLayout";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../theme";
+import ProtectedRoute from "../components/ProtectedRoute";
+import MainLayout from "../components/MainLayout";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  // Список маршрутов для MainLayout
-  const mainLayoutRoutes = ["/", "/users", "/issues", "/blog", "/docs", "/setting"];
-
-  // Проверяем, должен ли текущий маршрут использовать MainLayout
-  const isMainLayoutRoute = mainLayoutRoutes.some((path) => router.pathname.startsWith(path));
+  // Список маршрутов, которые не требуют аутентификации
+  const unprotectedRoutes = ["/auth/login", "/auth/register", "/page404"];
+  const isUnprotectedRoute = unprotectedRoutes.includes(router.pathname);
 
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {isMainLayoutRoute ? (
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        ) : (
+        {isUnprotectedRoute ? (
           <Component {...pageProps} />
+        ) : (
+          <ProtectedRoute>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </ProtectedRoute>
         )}
       </ThemeProvider>
     </AuthProvider>
   );
 }
-
-
