@@ -1,9 +1,15 @@
 {
+  "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "dev": {
+      "cache": false,
+      "outputs": []
+    },
     "build": {
       "outputs": ["dist/**"]
     },
-    "lint": {},
-    "test": {}
+    "lint": {
+      "cache": false
+    }
   }
 }
