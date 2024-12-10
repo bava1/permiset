@@ -1,3 +1,13 @@
+
 {
-    "installCommand": "pnpm install"
-  }
+    "builds": [
+        {
+            "src": "apps/client/package.json",
+            "use": "@vercel/next",
+            "config": {
+                "distDir": ".next"
+            }
+        }
+    ]
+}
+    
