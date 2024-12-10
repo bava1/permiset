@@ -42,14 +42,16 @@ router.post("/login", async (req, res) => {
   db.data?.refreshTokens.push(refreshToken);
   await db.write();
 
-  // Return both tokens
+  // Возвращаем данные пользователя без пароля
+  const { password: _, ...userWithoutPassword } = user;
+
   res.json({
     token, // Access token
     refreshToken,
-    email,
-    password// Refresh token
+    user: userWithoutPassword, // Информация о пользователе
   });
 });
+
 
 // POST /auth/logout - Logout user
 router.post("/logout", async (req, res) => {

@@ -30,6 +30,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  password: string;
   role: string;
   status: string;
 }
@@ -144,11 +145,18 @@ const UsersPage: React.FC = () => {
     id?: string;
     name: string;
     email: string;
+    password?: string;
     role: string;
     status: string;
   }) => {
     try {
+      // Проверка: пароль обязателен для новых пользователей
+      if (!userData.id && !userData.password) {
+        return Promise.reject(new Error("Password is required for new users."));
+      }
+  
       if (userData.id) {
+        // Обновление пользователя
         await updateUser(userData.id, {
           name: userData.name,
           email: userData.email,
@@ -156,27 +164,26 @@ const UsersPage: React.FC = () => {
           status: userData.status,
         });
       } else {
+        // Создание нового пользователя
         await createUser({
           name: userData.name,
           email: userData.email,
+          password: userData.password as string,
           role: userData.role,
           status: userData.status,
         });
       }
-      await loadUsers();
-      handleCloseModal();
+  
+      await loadUsers(); // Обновляем список пользователей
+      handleCloseModal(); // Закрываем модальное окно только при успехе
     } catch (err: any) {
       const errorMessage =
-        err.response?.data?.message ||
-        "Failed to save user. Please try again.";
-      if (err.response?.status === 400 || err.response?.status === 409) {
-        setError("User with this email already exists.");
-      } else {
-        console.error("Failed to save user:", errorMessage);
-        setError(errorMessage);
-      }
+        err.response?.data?.message || "Failed to save user. Please try again.";
+      return Promise.reject(new Error(errorMessage)); // Передаём ошибку в модальное окно
     }
   };
+  
+  
 
   const handleDeleteUser = async () => {
     if (!selectedUser) return;
@@ -201,7 +208,7 @@ const UsersPage: React.FC = () => {
   return (
     <ProtectedRoute>
       <Box>
-        <h1>Users</h1>
+        <h1>Users Management</h1>
         {loading ? (
           <Box sx={{ textAlign: "center", marginTop: 4 }}>
             <CircularProgress />
@@ -252,6 +259,157 @@ const UsersPage: React.FC = () => {
             </Box>
 
             {/* Table */}
+            <Box>
+              {paginatedUsers.map((user) => (
+                <Paper
+                  key={user.id}
+                  elevation={1}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: 2,
+                    mb: 1, // Вертикальный отступ между рядами
+                  }}
+                >
+                  <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "80%" }}>
+                    <Typography sx={{ width: "30%" }} variant="subtitle1"><strong>Name:</strong> {user.name}</Typography>
+                    <Typography sx={{ width: "30%" }} variant="body2"><strong>Email:</strong> {user.email}</Typography>
+                    <Typography sx={{ width: "20%" }} variant="body2"><strong>Role:</strong> {user.role}</Typography>
+                    <Typography sx={{ width: "20%" }} variant="body2"><strong>Status:</strong> {user.status}</Typography>
+                  </Box>
+                  <Box>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => openEditModal(user)}
+                      sx={{ mr: 1 }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      color="error"
+                      onClick={() => openDeleteDialog(user)}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </Paper>
+              ))}
+            </Box>
+
+            {/* Pagination */}
+            {filteredUsers.length > 8 && (
+              <TablePagination
+                component="div"
+                count={filteredUsers.length}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[8, 16, 24]}
+              />
+            )}
+          </Box>
+        )}
+
+        {/* Modal window for adding/editing */}
+        <UserModal
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveUserOrEditUser} // Ошибка передаётся сюда
+          initialData={modalMode === "edit" ? selectedUser || undefined : undefined}
+          mode={modalMode}
+        />
+
+
+        {/* Delete dialog */}
+        <ConfirmDialog
+          open={isDeleteDialogOpen}
+          onClose={handleCloseDeleteDialog}
+          onConfirm={handleDeleteUser}
+          title="Confirm Deletion"
+          content={`Are you sure you want to delete user "${selectedUser?.name}" (${selectedUser?.email})?`}
+          confirmText="Delete"
+          cancelText="No"
+          confirmColor="error"
+        />
+      </Box>
+    </ProtectedRoute>
+  );
+};
+
+export default UsersPage;
+/*
+<Box>
+  <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+    <TextField
+      label="Search by Name"
+      variant="outlined"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+    <FormControl sx={{ minWidth: 150 }}>
+      <InputLabel>Role</InputLabel>
+      <Select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
+        <MenuItem value="">All</MenuItem>
+        <MenuItem value="Administrator">Administrator</MenuItem>
+        <MenuItem value="User">User</MenuItem>
+        <MenuItem value="Manager">Manager</MenuItem>
+      </Select>
+    </FormControl>
+    <Button variant="contained" color="primary" onClick={openAddModal}>
+      Add User
+    </Button>
+  </Box>
+
+  <Box>
+    {paginatedUsers.map((user) => (
+      <Paper
+        key={user.id}
+        elevation={3}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: 2,
+          mb: 1, // Вертикальный отступ между рядами
+        }}
+      >
+        <Box>
+          <Typography variant="subtitle1"><strong>Name:</strong> {user.name}</Typography>
+          <Typography variant="body2"><strong>Email:</strong> {user.email}</Typography>
+          <Typography variant="body2"><strong>Role:</strong> {user.role}</Typography>
+          <Typography variant="body2"><strong>Status:</strong> {user.status}</Typography>
+        </Box>
+        <Box>
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            onClick={() => openEditModal(user)}
+            sx={{ mr: 1 }}
+          >
+            Edit
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            onClick={() => openDeleteDialog(user)}
+          >
+            Delete
+          </Button>
+        </Box>
+      </Paper>
+    ))}
+  </Box>
+</Box>
+
+
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -265,7 +423,7 @@ const UsersPage: React.FC = () => {
                 </TableHead>
                 <TableBody>
                   {paginatedUsers.map((user) => (
-                    <TableRow key={user.id}>
+                    <TableRow key={user.id} sx={{ mt: 2 }}>
                       <TableCell>{user.name}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
@@ -294,45 +452,4 @@ const UsersPage: React.FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-
-            {/* Pagination */}
-            {filteredUsers.length > 8 && (
-              <TablePagination
-                component="div"
-                count={filteredUsers.length}
-                page={page}
-                onPageChange={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                rowsPerPageOptions={[8, 16, 24]}
-              />
-            )}
-          </Box>
-        )}
-
-        {/* Modal window for adding/editing */}
-        <UserModal
-          open={isModalOpen}
-          onClose={handleCloseModal}
-          onSave={handleSaveUserOrEditUser}
-          initialData={modalMode === "edit" ? selectedUser || undefined : undefined}
-          mode={modalMode}
-        />
-
-        {/* Delete dialog */}
-        <ConfirmDialog
-          open={isDeleteDialogOpen}
-          onClose={handleCloseDeleteDialog}
-          onConfirm={handleDeleteUser}
-          title="Confirm Deletion"
-          content={`Are you sure you want to delete user "${selectedUser?.name}" (${selectedUser?.email})?`}
-          confirmText="Delete"
-          cancelText="No"
-          confirmColor="error"
-        />
-      </Box>
-    </ProtectedRoute>
-  );
-};
-
-export default UsersPage;
+*/

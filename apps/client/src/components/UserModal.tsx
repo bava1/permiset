@@ -52,7 +52,7 @@ const UserModal: React.FC<UserModalProps> = ({
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>(""); // Состояние для ошибки
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -77,28 +77,29 @@ const UserModal: React.FC<UserModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    setError("");
-  
-    // Check for password matches only if they exist
+    setError(""); // Сбрасываем ошибку перед новой попыткой сохранения
+
+    // Проверка совпадения паролей
     if (formData.password && formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-  
+
     try {
       setLoading(true);
-  
+
       const payload: any = {
         name: formData.name,
         email: formData.email,
         role: formData.role,
         status: formData.status,
       };
-      if (formData.password) payload.password = formData.password; 
+      if (formData.password) payload.password = formData.password;
       if (mode === "edit" && initialData?.id) payload.id = initialData.id;
-  
-      await onSave(payload);
-  
+
+      await onSave(payload); // Ошибка выбрасывается и попадает в `catch`
+
+      // Сбрасываем форму и закрываем окно только при успешном сохранении
       setFormData({
         id: "",
         name: "",
@@ -110,17 +111,18 @@ const UserModal: React.FC<UserModalProps> = ({
       });
       onClose();
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      console.error("Error in UserModal handleSubmit:", err.message);
+      setError(err.message || "An unexpected error occurred."); // Устанавливаем ошибку для отображения
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{mode === "add" ? "Add New User" : "Edit User"}</DialogTitle>
       <DialogContent>
+        {/* Блок для отображения ошибки */}
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}

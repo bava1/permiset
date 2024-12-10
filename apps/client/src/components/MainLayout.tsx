@@ -121,7 +121,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               color="inherit"
               edge="start"
               onClick={toggleDrawer}
-              sx={{ mr: 2, display: { xs: "inline-flex", sm: "none" } }}
+              sx={{ mr: 2, display: { md: "inline-flex", lg: "none" } }}
             >
               <MenuIcon />
             </IconButton>
@@ -179,6 +179,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             flexGrow: 1,
             p: 5,
             transition: "margin 0.3s",
+            marginTop: "-30px",
           }}
         >
         <Toolbar />

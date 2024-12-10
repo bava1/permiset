@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { db } from "../../db/index.js";
+import bcrypt from "bcrypt";
 
 const router = Router();
 
@@ -23,19 +24,45 @@ router.get("/:id", async (req, res) => {
 
 // Create a new user
 router.post("/", async (req, res) => {
-  await db.read();
-  const newUser = {
-    id: Date.now().toString(),
-    ...req.body,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+  try {
+    const { name, email, password, role, status } = req.body;
 
-  db.data?.users.push(newUser);
-  await db.write();
+    // Проверка на существование email
+    const existingUser = db.data?.users.find((user) => user.email === email);
+    if (existingUser) {
+      return res.status(400).json({ message: "User with this email already exists." });
+    }
 
-  res.status(201).json(newUser);
+    // Проверка наличия всех обязательных полей
+    if (!name || !email || !password || !role || !status) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    // Хэширование пароля
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Создание нового пользователя
+    const newUser = {
+      id: String(Date.now()),
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      status,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    db.data?.users.push(newUser);
+    await db.write();
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
+
 
 // Update user by ID
 router.put("/:id", async (req, res) => {

@@ -12,15 +12,24 @@ export const fetchUsers = async () => {
 };
 
 // Creating a new user
-export const createUser = async (user: { name: string; email: string; role: string; status: string }) => {
+
+export const createUser = async (user: { name: string; email: string; password: string; role: string; status: string }) => {
   try {
     const response = await axiosClient.post("/users", user);
-    return response.data; // Returning the created user
-  } catch (err) {
-    console.error("Error creating user:", err);
-    throw new Error("Failed to create user");
+    return response.data;
+  } catch (err: any) {
+    // Проверка ошибок, переданных с сервера
+    if (err.response?.status === 400 && err.response.data?.message) {
+      throw new Error(err.response.data.message); // Передача серверной ошибки
+    } else if (err.response?.status === 401) {
+      throw new Error("Unauthorized access. Please login again."); // Для ошибок 401
+    } else {
+      console.error("Error creating user:", err);
+      throw new Error("Failed to create user. Please check the provided data.");
+    }
   }
 };
+
 
 // Updating user data
 export const updateUser = async (id: string, updatedData: { name?: string; email?: string; role?: string; status?: string }) => {
