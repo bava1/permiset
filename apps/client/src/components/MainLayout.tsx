@@ -177,7 +177,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
+            p: 5,
             transition: "margin 0.3s",
           }}
         >

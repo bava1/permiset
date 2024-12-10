@@ -137,12 +137,12 @@
     },
     {
       "id": "1733754055164",
-      "name": "Xanka",
+      "name": "Xanka ",
       "email": "test@test.com",
-      "role": "Administrator",
+      "role": "Manager",
       "status": "active",
       "createdAt": "2024-12-09T14:20:55.164Z",
-      "updatedAt": "2024-12-09T14:21:05.794Z"
+      "updatedAt": "2024-12-10T07:14:37.353Z"
     }
   ],
   "auditLogs": [],
@@ -196,6 +196,6 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM0OTU5NDYsImV4cCI6MTczNDEwMDc0Nn0.c5NzjMLT6zEwFCBOZcOCDpOMXxAHwQq7HD6sGGCHYUE",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM1NjY5NjUsImV4cCI6MTczNDE3MTc2NX0.i2rURXWRzNW1EF12vk1iIaXE36fQFD5YqKkQjE6YcXY",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM2NzY5NjAsImV4cCI6MTczNDI4MTc2MH0.mcbH2xZjV3QyWb3tlQP28HvYGdbY6WZZqWxi-nLZyOY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM3NTM2NjYsImV4cCI6MTczNDM1ODQ2Nn0.M3X-kaCRSBTi7VRnetYUTzoLzn_NJ9DM2tdQaPYec2M"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzM0Nzk4MzYxNjYiLCJpYXQiOjE3MzM4MTY2NzgsImV4cCI6MTczNDQyMTQ3OH0.swcaFkU2FbHP4QWwEL4f11X56anWsX2Qm4zzTYSKky4"
   ]
 }
