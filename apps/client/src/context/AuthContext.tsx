@@ -2,21 +2,20 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { login as apiLogin, verifyToken } from "../api/auth";
 import axiosClient from "../api/axiosClient";
 
-// Типы данных пользователя
 interface User {
   id: string;
   role: string;
   email: string;
-  name: string; // Добавлено для полной информации о пользователе
+  name: string;
   status: string;
   createdAt: string;
-  updatedAt: string; // Например, "active" или "inactive"
+  updatedAt: string; 
 }
 
-// Типы для контекста
 interface AuthContextType {
   user: User | null;
   token: string | null;
+  permissions: string[]; 
   login: (email: string, password: string) => Promise<void>;
   register: (
     name: string,
@@ -28,32 +27,32 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   isAuthLoading: boolean;
+  hasPermission: (permission: string) => boolean; 
 }
 
-// Создание контекста
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Провайдер контекста
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null); // Хранение данных пользователя
-  const [token, setToken] = useState<string | null>(null); // Хранение токена
-  const [isAuthLoading, setIsAuthLoading] = useState(true); // Индикатор загрузки
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [permissions, setPermissions] = useState<string[]>([]); 
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  // Метод логина
   const login = async (email: string, password: string) => {
     try {
       const { token, refreshToken, user } = await apiLogin(email, password);
 
-      // Сохранение токенов и данных пользователя
+      // Saving tokens and user data
       localStorage.setItem("auth_token", token);
       localStorage.setItem("refresh_token", refreshToken);
 
       setToken(token);
       setUser(user);
+      setPermissions(user.permissions || []); 
     } catch (err: any) {
       console.error("Login failed:", err);
 
-      // Очистка данных при ошибке
+      // Clearing data on error
       localStorage.removeItem("auth_token");
       localStorage.removeItem("refresh_token");
 
@@ -65,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Метод регистрации и автоматического логина
+  // Registration method
   const register = async (
     name: string,
     email: string,
@@ -76,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await axiosClient.post("/auth/register", { name, email, password, role, status });
 
-      // Автоматический логин только для обычных пользователей
+      // Automatic login for regular users only
       if (!role && !status) {
         await login(email, password);
       }
@@ -91,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Метод logout
+  // logout
   const logout = async () => {
     try {
       const refreshToken = localStorage.getItem("refresh_token");
@@ -101,19 +100,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err) {
       console.error("Logout failed:", err);
     } finally {
-      // Очистка данных локально
       localStorage.removeItem("auth_token");
       localStorage.removeItem("refresh_token");
       setToken(null);
       setUser(null);
+      setPermissions([]);
+      window.location.href = "/auth/login";
     }
   };
 
-  // Проверка токена и получение данных пользователя
+  
+  // Verifying the token and getting user data
   const checkAuth = async () => {
     try {
-      const user = await verifyToken(); // Здесь возвращаются данные пользователя
+      const user = await verifyToken();
       setUser(user);
+      setPermissions(user.permissions || []); // Setting permissions
     } catch (err: any) {
       if (err.response?.status === 401) {
         console.warn("Unauthorized: Redirecting to login.");
@@ -124,7 +126,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Инициализация авторизации при загрузке приложения
+  // Checking permission
+  const hasPermission = (permission: string): boolean => {
+    return permissions.includes(permission);
+  };
+
+  // Initializing authorization when loading the application
   useEffect(() => {
     const initializeAuth = async () => {
       const storedToken = localStorage.getItem("auth_token");
@@ -147,18 +154,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initializeAuth();
   }, []);
 
-  const isAuthenticated = !!token; // Пользователь авторизован, если токен есть
+  const isAuthenticated = !!token;
 
   return (
     <AuthContext.Provider
       value={{
         user,
         token,
+        permissions,
         login,
         register,
         logout,
         isAuthenticated,
         isAuthLoading,
+        hasPermission,
       }}
     >
       {children}
@@ -166,7 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-// Кастомный хук для использования контекста
+// Custom hook for using context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

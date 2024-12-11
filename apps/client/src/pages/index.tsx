@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 
 
@@ -14,7 +15,7 @@ export default function Home() {
 
   const updateDate = new Date(user?.updatedAt || Date.now()).toLocaleDateString("ru-RU", dateTime);
   const createDate = new Date(user?.createdAt || Date.now()).toLocaleDateString("ru-RU", dateTime);
-  
+
   return (
     <>
       <h1>Welcome { user?.name }</h1>
@@ -23,7 +24,6 @@ export default function Home() {
       <h4>Your status: { user?.status }</h4>
       <h4>Date of creation: { createDate }</h4>
       <h4>Last modified date: { updateDate }</h4> 
-      
     </>
   );
 }

@@ -11,9 +11,14 @@ const roleSchema = z.object({
 });
 
 // Get all roles
+
 router.get("/", async (req, res) => {
   await db.read();
-  res.json(db.data?.roles || []);
+  
+  // Temporarily Exclude Administrator from Returned Data
+  const filteredRoles = db.data?.roles.filter((role) => role.name !== "Administrator");
+
+  res.json(filteredRoles || []);
 });
 
 // Get role by ID

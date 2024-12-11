@@ -25,6 +25,19 @@ axiosClient.interceptors.response.use(
   }
 );
 
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error("Unauthorized. Redirecting to login.");
+      // Очистка токенов и редирект на страницу логина
+      localStorage.removeItem("auth_token");
+      window.location.href = "/auth/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Interceptor for handling responses
 /*
 axiosClient.interceptors.response.use(

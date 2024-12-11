@@ -69,7 +69,7 @@ export async function initDatabase() {
   if (db.data.roles.length === 0) {
     db.data.roles = [
       { id: "role_user", name: "User", permissions: ["read"] },
-      { id: "role_manager", name: "Manager", permissions: ["read", "create", "update"] },
+      { id: "role_manager", name: "Manager", permissions: ["read", "create"] },
       { id: "role_admin", name: "Administrator", permissions: ["read", "create", "update", "delete", "change_roles"] },
     ];
   }

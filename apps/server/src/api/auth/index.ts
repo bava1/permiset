@@ -9,6 +9,11 @@ const router = Router();
 const JWT_SECRET = "supersecretkey"; // It is recommended to store in .env
 const JWT_EXPIRES_IN = "1h";
 
+// Method to get permissions by role
+const getPermissionsForRole = (roleName: string) => {
+  const role = db.data?.roles.find((r) => r.name === roleName);
+  return role ? role.permissions : [];
+};
 
 // POST /auth/login - User authorization
 router.post("/login", async (req, res) => {
@@ -22,33 +27,39 @@ router.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  // Checking the password
+  // Check password validity
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  // Let's create an access token (short-lived)
+  // Get permissions for the user's role
+  const permissions = getPermissionsForRole(user.role);
+
+  // Create tokens
   const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN, 
+    expiresIn: JWT_EXPIRES_IN,
   });
 
-  // Let's create a refresh token (long-lived)
   const refreshToken = jwt.sign({ id: user.id }, JWT_SECRET, {
-    expiresIn: "7d", 
+    expiresIn: "7d",
   });
 
-  // Save refresh token to the database (optional for added security)
+  // Save refresh token in the database (optional)
   db.data?.refreshTokens.push(refreshToken);
   await db.write();
 
-  // Возвращаем данные пользователя без пароля
+  // Exclude sensitive information (password) from the user object
   const { password: _, ...userWithoutPassword } = user;
 
+  // Return user info with permissions
   res.json({
     token, // Access token
     refreshToken,
-    user: userWithoutPassword, // Информация о пользователе
+    user: {
+      ...userWithoutPassword,
+      permissions, // Include permissions in the user object
+    },
   });
 });
 

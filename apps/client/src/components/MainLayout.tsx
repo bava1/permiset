@@ -11,13 +11,12 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-  Button,
-  useMediaQuery,
-  useTheme,
   Avatar,
   Tooltip,
   Menu,
-  MenuItem
+  MenuItem,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
@@ -25,14 +24,12 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import ArticleIcon from "@mui/icons-material/Article";
-// import DescriptionIcon from "@mui/icons-material/Description";
 import SettingsIcon from "@mui/icons-material/Settings";
-//import VoiceChatIcon from '@mui/icons-material/VoiceChat';
-// import LogoutIcon from '@mui/icons-material/Logout';
-import SyncAltIcon from '@mui/icons-material/SyncAlt';
-import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 const drawerWidth = 240;
 
@@ -41,14 +38,14 @@ interface MainLayoutProps {
 }
 
 const NAV_ITEMS = [
-  { label: "Home", icon: <HomeIcon />, path: "/" },
-  { label: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { label: "Users", icon: <PeopleIcon />, path: "/users" },
-  { label: "Issues", icon: <BugReportIcon />, path: "/issues" },
-  { label: "Blog", icon: <MarkUnreadChatAltIcon />, path: "/blog" },
-  { label: "Logs", icon: <SyncAltIcon />, path: "/logs" },
-  { label: "Docs", icon: <ArticleIcon />, path: "/docs" },
-  { label: "Settings", icon: <SettingsIcon />, path: "/setting" },
+  { label: "Home", path: "/", icon: <HomeIcon />, roles: ["User", "Manager", "Administrator"] },
+  { label: "Dashboard", path: "/dashboard", icon: <DashboardIcon />, roles: ["Manager", "Administrator"] },
+  { label: "Users", path: "/users", icon: <PeopleIcon />, roles: ["Manager", "Administrator"] },
+  { label: "Issues", path: "/issues", icon: <BugReportIcon />, roles: ["Manager", "Administrator"] },
+  { label: "Blog", path: "/blog", icon: <MarkUnreadChatAltIcon />, roles: ["User", "Manager", "Administrator"] },
+  { label: "Logs", path: "/logs", icon: <SyncAltIcon />, roles: ["Administrator"] },
+  { label: "Docs", path: "/docs", icon: <ArticleIcon />, roles: ["User", "Manager", "Administrator"] },
+  { label: "Settings", path: "/setting", icon: <SettingsIcon />, roles: ["Administrator"] },
 ];
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
@@ -58,7 +55,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Экран меньше 996px
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-
   const [drawerOpen, setDrawerOpen] = useState<boolean>(!isSmallScreen); // Драйвер открыт только для больших экранов
 
   const handleNavigation = (path: string) => {
@@ -87,7 +83,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
   const drawerContent = (
     <List>
-      {NAV_ITEMS.map((item) => (
+      {NAV_ITEMS.filter((item) => item.roles.includes(user?.role || "")).map((item) => (
         <ListItemButton
           key={item.path}
           onClick={() => handleNavigation(item.path)}
@@ -134,7 +130,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Tooltip title="User Options">
               <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                <Avatar>{user?.email?.[0]?.toUpperCase() || "U"}</Avatar>
+                <Avatar sx={{ color: "blue" }}>{user?.email?.[0]?.toUpperCase() || "U"}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -174,16 +170,18 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {drawerContent}
       </Drawer>
       <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 5,
-            transition: "margin 0.3s",
-            marginTop: "-30px",
-          }}
-        >
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 5,
+          transition: "margin 0.3s",
+          marginTop: "-30px",
+        }}
+      >
         <Toolbar />
-        {children}
+        <ProtectedRoute roles={NAV_ITEMS.find((item) => item.path === router.pathname)?.roles}>
+          {children}
+        </ProtectedRoute>
       </Box>
     </Box>
   );

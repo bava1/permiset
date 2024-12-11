@@ -3,13 +3,6 @@ import {
   Box,
   Typography,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   CircularProgress,
   TextField,
   MenuItem,
@@ -18,6 +11,7 @@ import {
   InputLabel,
   InputAdornment,
   IconButton,
+  Paper,
   TablePagination,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -25,6 +19,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { fetchUsers, createUser, updateUser, deleteUser } from "../api/users";
 import UserModal from "../components/UserModal";
 import ConfirmDialog from "../components/ConfirmDialog";
+import { useAuth } from "../context/AuthContext";
 
 interface User {
   id: string;
@@ -36,6 +31,7 @@ interface User {
 }
 
 const UsersPage: React.FC = () => {
+  const { hasPermission } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -59,13 +55,13 @@ const UsersPage: React.FC = () => {
     try {
       setLoading(true);
       const data = await fetchUsers();
-  
+
       const sortedUsers = data.sort((a: any, b: any) => {
         const dateA = new Date(a.createdAt || a.id).getTime();
         const dateB = new Date(b.createdAt || b.id).getTime();
         return dateB - dateA; // Sort by descending order of creation
       });
-  
+
       setUsers(sortedUsers);
       setFilteredUsers(sortedUsers);
     } catch (err: any) {
@@ -75,8 +71,6 @@ const UsersPage: React.FC = () => {
       setLoading(false);
     }
   };
-  
-  
 
   useEffect(() => {
     loadUsers();
@@ -150,13 +144,8 @@ const UsersPage: React.FC = () => {
     status: string;
   }) => {
     try {
-      // Проверка: пароль обязателен для новых пользователей
-      if (!userData.id && !userData.password) {
-        return Promise.reject(new Error("Password is required for new users."));
-      }
-  
       if (userData.id) {
-        // Обновление пользователя
+        // User update
         await updateUser(userData.id, {
           name: userData.name,
           email: userData.email,
@@ -164,7 +153,7 @@ const UsersPage: React.FC = () => {
           status: userData.status,
         });
       } else {
-        // Создание нового пользователя
+        // Creating a new user
         await createUser({
           name: userData.name,
           email: userData.email,
@@ -173,17 +162,13 @@ const UsersPage: React.FC = () => {
           status: userData.status,
         });
       }
-  
-      await loadUsers(); // Обновляем список пользователей
-      handleCloseModal(); // Закрываем модальное окно только при успехе
+
+      await loadUsers();
+      handleCloseModal();
     } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message || "Failed to save user. Please try again.";
-      return Promise.reject(new Error(errorMessage)); // Передаём ошибку в модальное окно
+      setError(err.response?.data?.message || "Failed to save user.");
     }
   };
-  
-  
 
   const handleDeleteUser = async () => {
     if (!selectedUser) return;
@@ -192,14 +177,10 @@ const UsersPage: React.FC = () => {
       await loadUsers();
       handleCloseDeleteDialog();
     } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message || "Failed to delete user.";
-      console.error("Failed to delete user:", errorMessage);
-      setError(errorMessage);
+      setError(err.response?.data?.message || "Failed to delete user.");
     }
   };
 
-  // Displaying a table
   const paginatedUsers = filteredUsers.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
@@ -248,17 +229,26 @@ const UsersPage: React.FC = () => {
                   <MenuItem value="Manager">Manager</MenuItem>
                 </Select>
               </FormControl>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={openAddModal}
-                sx={{ ml: "auto" }}
-              >
-                Add User
-              </Button>
+              {hasPermission("create") && ( // Check for creation
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={openAddModal}
+                  sx={{ ml: "auto" }}
+                >
+                  Add User
+                </Button>
+              )}
+            </Box>
+            <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+              <Typography sx={{ width: "32%" }} variant="subtitle1"><strong>Name:</strong></Typography>
+              <Typography sx={{ width: "28%" }} variant="body2"><strong>Email:</strong></Typography>
+              <Typography sx={{ width: "20%" }} variant="body2"><strong>Role:</strong></Typography>
+              <Typography sx={{ width: "35%" }} variant="body2"><strong>Status:</strong></Typography>
+              <Typography sx={{ width: "10%" }} variant="body2"><strong>Active:</strong></Typography>
             </Box>
 
-            {/* Table */}
+            {/* User List */}
             <Box>
               {paginatedUsers.map((user) => (
                 <Paper
@@ -269,39 +259,41 @@ const UsersPage: React.FC = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     padding: 2,
-                    mb: 1, // Вертикальный отступ между рядами
+                    mb: 1,
                   }}
                 >
                   <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "80%" }}>
-                    <Typography sx={{ width: "30%" }} variant="subtitle1"><strong>Name:</strong> {user.name}</Typography>
-                    <Typography sx={{ width: "30%" }} variant="body2"><strong>Email:</strong> {user.email}</Typography>
-                    <Typography sx={{ width: "20%" }} variant="body2"><strong>Role:</strong> {user.role}</Typography>
-                    <Typography sx={{ width: "20%" }} variant="body2"><strong>Status:</strong> {user.status}</Typography>
+                    <Typography sx={{ width: "30%" }} variant="subtitle1">{user.name}</Typography>
+                    <Typography sx={{ width: "30%" }} variant="body2">{user.email}</Typography>
+                    <Typography sx={{ width: "20%" }} variant="body2">{user.role}</Typography>
+                    <Typography sx={{ width: "20%" }} variant="body2">{user.status}</Typography>
                   </Box>
                   <Box>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => openEditModal(user)}
-                      sx={{ mr: 1 }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color="error"
-                      onClick={() => openDeleteDialog(user)}
-                    >
-                      Delete
-                    </Button>
+                    {hasPermission("update") && ( // Check for editing
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => openEditModal(user)}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                    {hasPermission("delete") && ( // Check for deletion
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        onClick={() => openDeleteDialog(user)}
+                        sx={{ ml: 1 }}
+                      >
+                        Delete
+                      </Button>
+                    )}
                   </Box>
                 </Paper>
               ))}
             </Box>
-
-            {/* Pagination */}
             {filteredUsers.length > 8 && (
               <TablePagination
                 component="div"
@@ -316,15 +308,14 @@ const UsersPage: React.FC = () => {
           </Box>
         )}
 
-        {/* Modal window for adding/editing */}
+        {/* Modal */}
         <UserModal
           open={isModalOpen}
           onClose={handleCloseModal}
-          onSave={handleSaveUserOrEditUser} // Ошибка передаётся сюда
+          onSave={handleSaveUserOrEditUser}
           initialData={modalMode === "edit" ? selectedUser || undefined : undefined}
           mode={modalMode}
         />
-
 
         {/* Delete dialog */}
         <ConfirmDialog
@@ -343,113 +334,3 @@ const UsersPage: React.FC = () => {
 };
 
 export default UsersPage;
-/*
-<Box>
-  <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-    <TextField
-      label="Search by Name"
-      variant="outlined"
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-    />
-    <FormControl sx={{ minWidth: 150 }}>
-      <InputLabel>Role</InputLabel>
-      <Select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
-        <MenuItem value="">All</MenuItem>
-        <MenuItem value="Administrator">Administrator</MenuItem>
-        <MenuItem value="User">User</MenuItem>
-        <MenuItem value="Manager">Manager</MenuItem>
-      </Select>
-    </FormControl>
-    <Button variant="contained" color="primary" onClick={openAddModal}>
-      Add User
-    </Button>
-  </Box>
-
-  <Box>
-    {paginatedUsers.map((user) => (
-      <Paper
-        key={user.id}
-        elevation={3}
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: 2,
-          mb: 1, // Вертикальный отступ между рядами
-        }}
-      >
-        <Box>
-          <Typography variant="subtitle1"><strong>Name:</strong> {user.name}</Typography>
-          <Typography variant="body2"><strong>Email:</strong> {user.email}</Typography>
-          <Typography variant="body2"><strong>Role:</strong> {user.role}</Typography>
-          <Typography variant="body2"><strong>Status:</strong> {user.status}</Typography>
-        </Box>
-        <Box>
-          <Button
-            size="small"
-            variant="outlined"
-            color="primary"
-            onClick={() => openEditModal(user)}
-            sx={{ mr: 1 }}
-          >
-            Edit
-          </Button>
-          <Button
-            size="small"
-            variant="outlined"
-            color="error"
-            onClick={() => openDeleteDialog(user)}
-          >
-            Delete
-          </Button>
-        </Box>
-      </Paper>
-    ))}
-  </Box>
-</Box>
-
-
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Role</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {paginatedUsers.map((user) => (
-                    <TableRow key={user.id} sx={{ mt: 2 }}>
-                      <TableCell>{user.name}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.role}</TableCell>
-                      <TableCell>{user.status}</TableCell>
-                      <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => openEditModal(user)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          color="error"
-                          sx={{ ml: 1 }}
-                          onClick={() => openDeleteDialog(user)}
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-*/

@@ -5,17 +5,33 @@ import { CircularProgress, Box } from "@mui/material";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  roles?: string[]; // Разрешённые роли для этого маршрута
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, isAuthLoading } = useAuth();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
+  const { isAuthenticated, isAuthLoading, user, logout } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isAuthLoading && !isAuthenticated) {
-      router.push("/auth/login");
-    }
-  }, [isAuthLoading, isAuthenticated, router]);
+    const verifyAccess = async () => {
+      if (isAuthLoading) return; // Ждём завершения загрузки
+
+      if (!isAuthenticated) {
+        console.warn("User not authenticated. Redirecting...");
+        await logout();
+        router.replace("/auth/login"); // Используем replace для полного перехода
+        return;
+      }
+
+      if (roles && !roles.includes(user?.role || "")) {
+        console.warn("Access denied. Redirecting...");
+        await logout();
+        router.replace("/auth/login"); // Используем replace
+      }
+    };
+
+    verifyAccess();
+  }, [isAuthenticated, isAuthLoading, user, roles, router, logout]);
 
   if (isAuthLoading) {
     return (
@@ -25,14 +41,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
-  if (!isAuthenticated) {
-    return null; // If not authenticated and redirect not completed
-  }
-
   return <>{children}</>;
 };
 
+
+
 export default ProtectedRoute;
+
 
 /*
 import { useAuth } from "../context/AuthContext";
