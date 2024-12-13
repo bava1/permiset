@@ -30,6 +30,8 @@ import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
+import logo from './assets/img/Logo1.png'; 
+import Image from 'next/image';
 
 const drawerWidth = 240;
 
@@ -121,10 +123,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
-              PermiSET
-            </Typography>
+            <Box>
+              <Image style={{marginTop: "4px"}} src="/img/Logo1.png" alt="Logo" width={170} height={45} />
+            </Box>
           </Box>
+
 
           {/* Правая часть: иконка пользователя */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -141,7 +144,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               transformOrigin={{ vertical: "top", horizontal: "right" }}
             >
               <MenuItem disabled>
-                <Typography variant="body2">Name: {user?.email}</Typography>
+                <Typography variant="body2">Name: {user?.name}</Typography>
+              </MenuItem>
+              <MenuItem disabled>
+                <Typography variant="body2">Email: {user?.email}</Typography>
               </MenuItem>
               <MenuItem disabled>
                 <Typography variant="body2">Role: {user?.role}</Typography>

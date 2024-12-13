@@ -4,6 +4,8 @@
     "module": "CommonJS",
     "strict": true,
     "baseUrl": ".",
+    "jsx": "react-jsx", // Убедитесь, что это значение установлено
+    "moduleResolution": "node",
     "paths": {
       "@ui/*": ["packages/ui/src/*"],
       "@utils/*": ["packages/utils/src/*"],

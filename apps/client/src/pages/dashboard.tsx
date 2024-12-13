@@ -6,6 +6,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { fetchUsers } from "../api/users";
+import { set } from 'zod';
+import { useEffect, useState } from 'react';
 
 
 const bull = (
@@ -17,24 +20,54 @@ const bull = (
   </Box>
 );
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  status: string;
+}
 
 export default function Dashboard() {
+  const [users, setUsers] = React.useState<User[]>([]);
+  const [error, setError] = useState<string | null>(null); // Состояние ошибк
+
+  useEffect(() => {
+    // Асинхронная функция для получения данных
+    const loadUsers = async () => {
+      try {
+        const data = await fetchUsers();
+        setUsers(data); // Устанавливаем данные
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch users");
+      };
+    };
+
+    loadUsers(); // Вызываем функцию
+  }, []);
+  
   return (
     <>
       <h1>Welcome to Dashboard!</h1>
       <Card sx={{ minWidth: 275 }}>
       <CardContent>
-        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-        General information about users
-        </Typography>
         <Typography variant="h5" component="div">
           General information about users
         </Typography>
         <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
         <Typography variant="body2">
-        Total registered: 13
+          Total registered: {users.length}
           <br />
-          {'"a benevolent smile"'}
+          Total registered active: {(users.filter((user) => user.status === 'active')).length}
+          <br />
+          Total registered inactive: {(users.filter((user) => user.status === 'inactive')).length}
+          <br />
+          Total registered role - Administrator: {(users.filter((user) => user.role === 'Administrator')).length}
+          <br />
+          Total registered role - Manager: {(users.filter((user) => user.role === 'Manager')).length}
+          <br />
+          Total registered role - User: {(users.filter((user) => user.role === 'User')).length}
         </Typography>
       </CardContent>
       <CardActions>

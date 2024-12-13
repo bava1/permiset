@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
+import React from "react"; // Добавьте это в начало файла
 
 
 export default function Home() {

@@ -20,6 +20,7 @@ import { fetchUsers, createUser, updateUser, deleteUser } from "../api/users";
 import UserModal from "../components/UserModal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useAuth } from "../context/AuthContext";
+import Image from 'next/image';
 
 interface User {
   id: string;
@@ -240,17 +241,17 @@ const UsersPage: React.FC = () => {
                 </Button>
               )}
             </Box>
-            <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-              <Typography sx={{ width: "32%" }} variant="subtitle1"><strong>Name:</strong></Typography>
-              <Typography sx={{ width: "28%" }} variant="body2"><strong>Email:</strong></Typography>
-              <Typography sx={{ width: "20%" }} variant="body2"><strong>Role:</strong></Typography>
-              <Typography sx={{ width: "35%" }} variant="body2"><strong>Status:</strong></Typography>
-              <Typography sx={{ width: "10%" }} variant="body2"><strong>Active:</strong></Typography>
+            <Box sx={{ display: "flex", alignItems: "center", ml: "80px", width: "90%" }}>
+              <Typography sx={{ width: "25%" }} variant="subtitle1"><strong>Name:</strong></Typography>
+              <Typography sx={{ width: "24%" }} variant="body2"><strong>Email:</strong></Typography>
+              <Typography sx={{ width: "18%" }} variant="body2"><strong>Role:</strong></Typography>
+              <Typography sx={{ width: "30%" }} variant="body2"><strong>Status:</strong></Typography>
+              <Typography sx={{ width: "5%" }} variant="body2"><strong>Active:</strong></Typography>
             </Box>
 
             {/* User List */}
             <Box>
-              {paginatedUsers.map((user) => (
+              {paginatedUsers.map((user, index) => (
                 <Paper
                   key={user.id}
                   elevation={1}
@@ -258,17 +259,18 @@ const UsersPage: React.FC = () => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    padding: 2,
+                    padding: 1,
                     mb: 1,
                   }}
                 >
                   <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "80%" }}>
+                    <Image style={{ borderRadius: "4px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"}} src={`/imgContact/img${index + 1}.jpg`} alt="Logo" width={50} height={50} />
                     <Typography sx={{ width: "30%" }} variant="subtitle1">{user.name}</Typography>
                     <Typography sx={{ width: "30%" }} variant="body2">{user.email}</Typography>
                     <Typography sx={{ width: "20%" }} variant="body2">{user.role}</Typography>
                     <Typography sx={{ width: "20%" }} variant="body2">{user.status}</Typography>
                   </Box>
-                  <Box>
+                  <Box sx={{ mr: "7px"}}>
                     {hasPermission("update") && ( // Check for editing
                       <Button
                         size="small"
