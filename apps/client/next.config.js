@@ -8,7 +8,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin', // Устанавливаем нужное значение
+            value: 'no-referrer', // Устанавливаем нужное значение
           },
         ],
       },
