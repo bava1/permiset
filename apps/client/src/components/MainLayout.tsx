@@ -30,7 +30,6 @@ import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
-import logo from './assets/img/Logo1.png'; 
 import Image from 'next/image';
 
 const drawerWidth = 240;

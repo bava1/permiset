@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "strict": true,
     "baseUrl": ".",
+    "outDir": "./dist",
     "jsx": "react-jsx", // Убедитесь, что это значение установлено
     "moduleResolution": "node",
     "paths": {
@@ -15,5 +16,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["packages", "apps"]
+  "include": ["packages", "apps"],
+  "exclude": ["node_modules"]
 }

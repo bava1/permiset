@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
@@ -21,6 +21,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.2",
+    "turbo": "^2.3.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -29,10 +30,12 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
     "axios-mock-adapter": "^2.1.0",
+    "eslint-config-next": "^15.1.0",
+    "eslint-plugin-react": "^7.37.2",
     "jsdom": "^25.0.1",
     "msw": "^2.6.8",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "typescript": "^5.7.2"
   }
 }

@@ -6,7 +6,11 @@
       "outputs": []
     },
     "build": {
-      "outputs": ["dist/**"]
+      "outputs": [        
+        "dist/**",
+        ".next/**"],
+      "dependsOn": [],
+      "cache": false
     },
     "test": {
       "dependsOn": ["build"],
@@ -17,3 +21,5 @@
     }
   }
 }
+
+

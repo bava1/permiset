@@ -3,8 +3,9 @@
   "version": "1.4.0",
   "type": "module",
   "scripts": {
-    "dev": "node --no-warnings --loader ts-node/esm src/index.ts",
-    "build": "tsc"
+    "dev": "cross-env NODE_ENV=development node --loader ts-node/esm src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -14,7 +15,8 @@
     "jsonwebtoken": "^9.0.2",
     "lowdb": "^5.1.0",
     "swagger-ui-express": "^5.0.1",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "typescript": "^5.7.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -23,8 +25,8 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.5.9",
     "@types/swagger-ui-express": "^4.1.7",
+    "cross-env": "^7.0.3",
     "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.0"
+    "ts-node-dev": "^2.0.0"
   }
 }

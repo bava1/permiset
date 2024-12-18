@@ -1,0 +1,9 @@
+{
+    "build": {
+      "env": {
+        "NEXT_PUBLIC_API_URL": "https://permiset-server-latest.onrender.com"
+      },
+      "outputDirectory": ".next"
+    }
+  }
+  
