@@ -9,7 +9,6 @@ import authRouter from "./api/auth/index.js";
 import { checkPermissions } from "./middlewares/checkPermissions.js";
 import cors from "cors";
 
-const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Настройка CORS для взаимодействия с клиентом
@@ -56,6 +55,3 @@ app.use("/roles", authenticate, rolesRouter);
 
 app.use("/auth", authRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
