@@ -3,9 +3,10 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(req: NextRequest) {
   const requestHeaders = new Headers(req.headers);
-  requestHeaders.set('Referrer-Policy', 'no-referrer-when-downgrade');
+  requestHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin'); // Устанавливаем нужное значение
 
   return NextResponse.next({
     headers: requestHeaders,
   });
 }
+

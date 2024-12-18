@@ -4,11 +4,11 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/(.*)', // Применяется ко всем запросам
         headers: [
           {
             key: 'Referrer-Policy',
-            value: 'no-referrer-when-downgrade',
+            value: 'strict-origin-when-cross-origin', // Устанавливаем нужное значение
           },
         ],
       },
