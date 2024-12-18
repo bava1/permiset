@@ -15,7 +15,7 @@ const PORT = 3000;
 // Настройка CORS для взаимодействия с клиентом
 app.use(
   cors({
-    origin: "http://localhost:3001", // Разрешаем клиенту обращаться к API
+    origin: "https://permiset-client-1.vercel.app", // Разрешаем клиенту обращаться к API
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
   })
