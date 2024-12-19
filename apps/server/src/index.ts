@@ -57,5 +57,5 @@ app.use("/roles", authenticate, rolesRouter);
 app.use("/auth", authRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running...`);
 });

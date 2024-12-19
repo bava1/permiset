@@ -74,6 +74,43 @@ export async function initDatabase() {
     ];
   }
 
+  if (db.data.users.length === 0) {
+    console.log("Seeding initial users...");
+    db.data.users = [
+      {
+        id: "user1",
+        name: "Role Administrator employee",
+        email: "administrator@test.com",
+        password: "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW", 
+        role: "Administrator",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "user2",
+        name: "Role Manager employee",
+        email: "manager@test.com",
+        password: "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW", 
+        role: "Manager",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "user3",
+        name: "Role User employee",
+        email: "user@test.com",
+        password: "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW", 
+        role: "User",
+        status: "active",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+  }
+  
+
   // Initialize the rights array if it does not exist
   if (!db.data.permissions) {
     db.data.permissions = [];
