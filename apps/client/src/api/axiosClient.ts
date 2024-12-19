@@ -21,7 +21,6 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     console.error("Interceptor error:", error);
-    // Логика обработки ошибок
     return Promise.reject(error);
   }
 );
@@ -31,7 +30,6 @@ axiosClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       console.error("Unauthorized. Redirecting to login.");
-      // Очистка токенов и редирект на страницу логина
       localStorage.removeItem("auth_token");
       window.location.href = "/auth/login";
     }

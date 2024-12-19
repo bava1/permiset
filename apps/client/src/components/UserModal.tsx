@@ -13,27 +13,7 @@ import {
   Alert,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
-
-interface UserModalProps {
-  open: boolean;
-  onClose: () => void;
-  onSave: (userData: {
-    id?: string;
-    name: string;
-    email: string;
-    role: string;
-    status: string;
-    password?: string;
-  }) => Promise<void>;
-  initialData?: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    status: string;
-  };
-  mode: "add" | "edit";
-}
+import { UserModalProps } from "../utils/interfaces/IUserModalProps";
 
 const UserModal: React.FC<UserModalProps> = ({
   open,

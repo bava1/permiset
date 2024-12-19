@@ -7,17 +7,8 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import { ConfirmDialogProps } from "../utils/interfaces/IConfirmDialogProps";
 
-interface ConfirmDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title?: string;
-  content?: string;
-  confirmText?: string;
-  cancelText?: string;
-  confirmColor?: "primary" | "secondary" | "error" | "success";
-}
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   open,

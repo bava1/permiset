@@ -21,15 +21,8 @@ import UserModal from "../components/UserModal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useAuth } from "../context/AuthContext";
 import Image from 'next/image';
+import { User } from "../utils/interfaces/IUser";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  status: string;
-}
 
 const UsersPage: React.FC = () => {
   const { hasPermission } = useAuth();

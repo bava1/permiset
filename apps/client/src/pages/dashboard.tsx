@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { fetchUsers } from "../api/users";
 import { set } from 'zod';
 import { useEffect, useState } from 'react';
-
+import { User } from '../utils/interfaces/IUser';
 
 const bull = (
   <Box
@@ -19,15 +19,6 @@ const bull = (
     •
   </Box>
 );
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-  status: string;
-}
 
 export default function Dashboard() {
   const [users, setUsers] = React.useState<User[]>([]);

@@ -12,45 +12,37 @@ import cors from "cors";
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// Настройка CORS для взаимодействия с клиентом
+// Setting up CORS for client interaction
 app.use(
   cors({
-    // origin: "http://localhost:3001", // Разрешаем клиенту обращаться к API
-    origin: "https://permiset-client-1.vercel.app", // Разрешаем клиенту обращаться к API
+    // origin: "http://localhost:3001", 
+    origin: "https://permiset-client-1.vercel.app", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
   })
 );
 
-/*
-app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  next();
-});
-*/
 
-
-// Middleware для обработки JSON-тела запроса
+// Middleware for processing JSON request body
 app.use(express.json());
 
-// Swagger-документация
+// Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Инициализация базы данных
+// Initializing the database
 initDatabase().catch((err) => {
   console.error("Database initialization error:", err);
 });
 
-// Роут для корневого URL
+// Route for root URL
 app.get("/", (req, res) => {
   res.send("Welcome to the Permiset API! Use /users to manage users.");
 });
 
-// Подключение маршрутов с middleware аутентификации
+// Connecting routes with authentication middleware
 app.use("/users", authenticate, usersRouter);
 app.use("/roles", authenticate, rolesRouter);
 
-// Пример с дополнительным middleware для проверки прав доступа
 // app.use("/users", authenticate, checkPermissions(["read", "update"]), usersRouter);
 // app.use("/roles", authenticate, checkPermissions(["manage_roles"]), rolesRouter);
 
