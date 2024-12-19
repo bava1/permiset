@@ -51,7 +51,7 @@ const UserModal: React.FC<UserModalProps> = ({
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState<string>(""); // Состояние для ошибки
+  const [error, setError] = useState<string>(""); 
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -76,9 +76,9 @@ const UserModal: React.FC<UserModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    setError(""); // Сбрасываем ошибку перед новой попыткой сохранения
+    setError(""); // Reset the error before trying to save again
 
-    // Проверка совпадения паролей
+    // Checking password matches
     if (formData.password && formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
       return;
@@ -96,9 +96,9 @@ const UserModal: React.FC<UserModalProps> = ({
       if (formData.password) payload.password = formData.password;
       if (mode === "edit" && initialData?.id) payload.id = initialData.id;
 
-      await onSave(payload); // Ошибка выбрасывается и попадает в `catch`
+      await onSave(payload); // The error is thrown and caught in `catch`
 
-      // Сбрасываем форму и закрываем окно только при успешном сохранении
+      // We reset the form and close the window only after successful saving.
       setFormData({
         id: "",
         name: "",
@@ -111,7 +111,7 @@ const UserModal: React.FC<UserModalProps> = ({
       onClose();
     } catch (err: any) {
       console.error("Error in UserModal handleSubmit:", err.message);
-      setError(err.message || "An unexpected error occurred."); // Устанавливаем ошибку для отображения
+      setError(err.message || "An unexpected error occurred."); 
     } finally {
       setLoading(false);
     }
@@ -121,7 +121,7 @@ const UserModal: React.FC<UserModalProps> = ({
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{mode === "add" ? "Add New User" : "Edit User"}</DialogTitle>
       <DialogContent>
-        {/* Блок для отображения ошибки */}
+        {/* Block for displaying error */}
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}

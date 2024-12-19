@@ -31,20 +31,19 @@ interface User {
 
 export default function Dashboard() {
   const [users, setUsers] = React.useState<User[]>([]);
-  const [error, setError] = useState<string | null>(null); // Состояние ошибк
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
-    // Асинхронная функция для получения данных
     const loadUsers = async () => {
       try {
         const data = await fetchUsers();
-        setUsers(data); // Устанавливаем данные
+        setUsers(data); 
       } catch (err: any) {
         setError(err.message || "Failed to fetch users");
       };
     };
 
-    loadUsers(); // Вызываем функцию
+    loadUsers(); 
   }, []);
   
   return (

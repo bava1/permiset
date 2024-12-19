@@ -42,10 +42,10 @@ const NAV_ITEMS = [
   { label: "Home", path: "/", icon: <HomeIcon />, roles: ["User", "Manager", "Administrator"] },
   { label: "Dashboard", path: "/dashboard", icon: <DashboardIcon />, roles: ["Manager", "Administrator"] },
   { label: "Users", path: "/users", icon: <PeopleIcon />, roles: ["Manager", "Administrator"] },
-  { label: "Issues", path: "/issues", icon: <BugReportIcon />, roles: ["Manager", "Administrator"] },
+  { label: "Issues", path: "/issues", icon: <BugReportIcon />, roles: ["User", "Manager", "Administrator"] },
   { label: "Blog", path: "/blog", icon: <MarkUnreadChatAltIcon />, roles: ["User", "Manager", "Administrator"] },
   { label: "Logs", path: "/logs", icon: <SyncAltIcon />, roles: ["Administrator"] },
-  { label: "Docs", path: "/docs", icon: <ArticleIcon />, roles: ["User", "Manager", "Administrator"] },
+  { label: "Docs", path: "/docs", icon: <ArticleIcon />, roles: ["Administrator"] },
   { label: "Settings", path: "/setting", icon: <SettingsIcon />, roles: ["Administrator"] },
 ];
 
@@ -53,15 +53,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const router = useRouter();
   const { logout, user } = useAuth();
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Экран меньше 996px
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Screen less than 996px
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(!isSmallScreen); // Драйвер открыт только для больших экранов
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(!isSmallScreen); // The driver is only open for large screens
 
   const handleNavigation = (path: string) => {
     router.push(path);
     if (isSmallScreen) {
-      setDrawerOpen(false); // Закрываем Drawer на мобильных устройствах после навигации
+      setDrawerOpen(false); // Close Drawer on mobile devices after navigation
     }
   };
 
@@ -112,7 +112,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* Левая часть: кнопка меню */}
+          {/*Left side: menu button */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton
               color="inherit"
@@ -128,7 +128,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           </Box>
 
 
-          {/* Правая часть: иконка пользователя */}
+          {/* Right side: user icon */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Tooltip title="User Options">
               <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
@@ -161,7 +161,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <Drawer
         variant={isSmallScreen ? "temporary" : "persistent"}
         open={drawerOpen}
-        onClose={toggleDrawer} // Закрытие для маленьких экранов
+        onClose={toggleDrawer} // Close for small screens
         sx={{
           width: drawerWidth,
           flexShrink: 0,

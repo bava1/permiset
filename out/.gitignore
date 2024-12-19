@@ -1,9 +1,0 @@
-
-dist/
-.env
-.next
-node_modules
-.turbo/cookies
-.turbo/cache
-.turbo
-.next-dev

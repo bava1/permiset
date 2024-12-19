@@ -5,7 +5,7 @@
     "strict": true,
     "baseUrl": ".",
     "outDir": "./dist",
-    "jsx": "react-jsx", // Убедитесь, что это значение установлено
+    "jsx": "react-jsx", 
     "moduleResolution": "node",
     "paths": {
       "@ui/*": ["packages/ui/src/*"],

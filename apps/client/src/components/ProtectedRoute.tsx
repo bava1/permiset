@@ -5,7 +5,7 @@ import { CircularProgress, Box } from "@mui/material";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  roles?: string[]; // Разрешённые роли для этого маршрута
+  roles?: string[]; // Allowed roles for this route
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
@@ -14,19 +14,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
 
   React.useEffect(() => {
     const verifyAccess = async () => {
-      if (isAuthLoading) return; // Ждём завершения загрузки
+      if (isAuthLoading) return; // Waiting for the download to complete
 
       if (!isAuthenticated) {
         console.warn("User not authenticated. Redirecting...");
         await logout();
-        router.replace("/auth/login"); // Используем replace для полного перехода
+        router.replace("/auth/login"); 
         return;
       }
 
       if (roles && !roles.includes(user?.role || "")) {
         console.warn("Access denied. Redirecting...");
         await logout();
-        router.replace("/auth/login"); // Используем replace
+        router.replace("/auth/login"); 
       }
     };
 

@@ -50,7 +50,36 @@
     }
   ],
   "users": [
-
+    {
+      "id": "user1",
+      "name": "Role Administrator employee",
+      "email": "administrator@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "Administrator",
+      "status": "active",
+      "createdAt": "2024-12-19T09:05:58.975Z",
+      "updatedAt": "2024-12-19T09:05:58.977Z"
+    },
+    {
+      "id": "user2",
+      "name": "Role Manager employee",
+      "email": "manager@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "Manager",
+      "status": "active",
+      "createdAt": "2024-12-19T09:05:58.977Z",
+      "updatedAt": "2024-12-19T09:05:58.977Z"
+    },
+    {
+      "id": "user3",
+      "name": "Role User employee",
+      "email": "user@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "User",
+      "status": "active",
+      "createdAt": "2024-12-19T09:05:58.977Z",
+      "updatedAt": "2024-12-19T09:05:58.977Z"
+    }
   ],
   "auditLogs": [],
   "refreshTokens": [
