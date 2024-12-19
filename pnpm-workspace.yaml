@@ -2,3 +2,4 @@ packages:
   - apps/server
   - apps/client
   - turbo
+  - tests/*
