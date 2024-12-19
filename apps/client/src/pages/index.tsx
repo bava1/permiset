@@ -25,7 +25,6 @@ export default function Home() {
       <h4>Your status: { user?.status }</h4>
       <h4>Date of creation: { createDate }</h4>
       <h4>Last modified date: { updateDate }</h4> 
-      <button onClick={() => {throw new Error("This is your first error!");}}>Break the world</button>
     </>
   );
 }
