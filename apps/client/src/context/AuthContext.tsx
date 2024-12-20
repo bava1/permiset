@@ -1,34 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { login as apiLogin, verifyToken } from "../api/auth";
 import axiosClient from "../api/axiosClient";
-
-interface User {
-  id: string;
-  role: string;
-  email: string;
-  name: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string; 
-}
-
-interface AuthContextType {
-  user: User | null;
-  token: string | null;
-  permissions: string[]; 
-  login: (email: string, password: string) => Promise<void>;
-  register: (
-    name: string,
-    email: string,
-    password: string,
-    role?: string,
-    status?: string
-  ) => Promise<void>;
-  logout: () => void;
-  isAuthenticated: boolean;
-  isAuthLoading: boolean;
-  hasPermission: (permission: string) => boolean; 
-}
+import { User } from "../utils/interfaces/IUser";
+import { AuthContextType } from "../utils/interfaces/IAuthContextType";
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

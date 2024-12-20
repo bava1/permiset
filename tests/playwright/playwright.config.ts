@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 30 * 1000, // Тайм-аут на каждый тест
   retries: 1,         // Повтор тестов при ошибках
   use: {
-    baseURL: 'http://localhost:3000', // URL сервера
+    //baseURL: 'http://localhost:3000', // URL сервера
     headless: true,                  // Запуск без интерфейса
     screenshot: 'only-on-failure',   // Скриншоты только при ошибках
     video: 'retain-on-failure',      // Видеозапись только при ошибках
