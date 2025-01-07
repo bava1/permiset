@@ -6,7 +6,7 @@ import { db } from "../../db/index.js";
 const router = Router();
 
 // Constants for JWT
-const JWT_SECRET = "supersecretkey"; // It is recommended to store in .env
+const JWT_SECRET = "supersecretkey";
 const JWT_EXPIRES_IN = "1h";
 
 // Method to get permissions by role

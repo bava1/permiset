@@ -1,20 +1,29 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { join } from 'path';
+dotenv.config({ path: join(__dirname, '.env') });
 
 export default defineConfig({
-  testDir: './tests', // Каталог, где находятся ваши тесты
-  timeout: 30 * 1000, // Тайм-аут на каждый тест
-  retries: 1,         // Повтор тестов при ошибках
+  testDir: './tests', 
+  timeout: 10 * 1000, 
+  retries: 1,
+  workers: 1,
+  reporter: 'html', 
+  fullyParallel: true,
   use: {
-    //baseURL: 'http://localhost:3000', // URL сервера
-    headless: true,                  // Запуск без интерфейса
-    screenshot: 'only-on-failure',   // Скриншоты только при ошибках
-    video: 'retain-on-failure',      // Видеозапись только при ошибках
+    //baseURL: 'http://localhost:3000', 
+    // headless: true,                  
+    screenshot: 'only-on-failure',   
+    // video: 'retain-on-failure',      
+    trace: 'on',
   },
   projects: [
     {
       name: 'chromium',
-      use: { browserName: 'chromium' },
+      use: { ...devices['Desktop Chrome'] },
     },
+    /*
     {
       name: 'firefox',
       use: { browserName: 'firefox' },
@@ -23,5 +32,6 @@ export default defineConfig({
       name: 'webkit',
       use: { browserName: 'webkit' },
     },
+    */
   ],
 });

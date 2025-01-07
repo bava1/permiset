@@ -8,3 +8,5 @@ node_modules
 .turbo
 .next-dev
 /out
+playwright-report/
+test-results/
