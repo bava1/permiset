@@ -8,7 +8,7 @@ export default defineConfig({
   testDir: './tests', 
   timeout: 10 * 1000, 
   retries: 1,
-  workers: 1,
+  workers: 2,
   reporter: 'html', 
   fullyParallel: true,
   use: {
