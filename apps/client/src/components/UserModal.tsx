@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 import { UserModalProps } from "../utils/interfaces/IUserModalProps";
+import { useAuth } from "../context/AuthContext";
 
 const UserModal: React.FC<UserModalProps> = ({
   open,
@@ -22,6 +23,7 @@ const UserModal: React.FC<UserModalProps> = ({
   initialData,
   mode,
 }) => {
+  const { user } = useAuth(); // Accessing the logged-in user
   const [formData, setFormData] = useState({
     id: initialData?.id || "",
     name: initialData?.name || "",
@@ -153,6 +155,7 @@ const UserModal: React.FC<UserModalProps> = ({
             name="role"
             value={formData.role}
             onChange={handleSelectChange}
+            disabled={user?.role === "Manager"} // Disable if logged-in user is Manager
           >
             <MenuItem value="User">User</MenuItem>
             <MenuItem value="Manager">Manager</MenuItem>

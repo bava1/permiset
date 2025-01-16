@@ -13,6 +13,8 @@ import {
   IconButton,
   Paper,
   TablePagination,
+  Tooltip,
+  Chip,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -22,10 +24,10 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import { useAuth } from "../context/AuthContext";
 import Image from 'next/image';
 import { User } from "../utils/interfaces/IUser";
-
+import { useTheme } from '@mui/material/styles';
 
 const UsersPage: React.FC = () => {
-  const { hasPermission } = useAuth();
+  const { hasPermission, user } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -42,6 +44,7 @@ const UsersPage: React.FC = () => {
   // Pagination
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(8);
+  console.log(user);
 
   // Loading user list
   const loadUsers = async () => {
@@ -57,6 +60,7 @@ const UsersPage: React.FC = () => {
       });
 
       setUsers(sortedUsers);
+      console.log(users);
       setFilteredUsers(sortedUsers);
     } catch (err: any) {
       console.error("Failed to fetch users:", err);
@@ -68,6 +72,7 @@ const UsersPage: React.FC = () => {
 
   useEffect(() => {
     loadUsers();
+
   }, []);
 
   // Updating the list when changing filters
@@ -179,6 +184,18 @@ const UsersPage: React.FC = () => {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+const theme = useTheme();
+  const getChipColor = (role: string) => {
+    switch (role) {
+      case "Administrator":
+        return theme.palette.customColors.administrator;
+      case "Manager":
+        return theme.palette.customColors.manager;
+      case "User":
+      default:
+        return theme.palette.customColors.user;
+    }
+  };
 
   return (
     <ProtectedRoute>
@@ -244,9 +261,9 @@ const UsersPage: React.FC = () => {
 
             {/* User List */}
             <Box>
-              {paginatedUsers.map((user, index) => (
+              {paginatedUsers.map((userItem, index) => (
                 <Paper
-                  key={user.id}
+                  key={userItem.id}
                   elevation={1}
                   sx={{
                     display: "flex",
@@ -258,32 +275,42 @@ const UsersPage: React.FC = () => {
                 >
                   <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "80%" }}>
                     <Image style={{ borderRadius: "4px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"}} src={`/imgContact/img${index + 1}.jpg`} alt="Logo" width={50} height={50} />
-                    <Typography sx={{ width: "30%" }} variant="subtitle1">{user.name}</Typography>
-                    <Typography sx={{ width: "30%" }} variant="body2">{user.email}</Typography>
-                    <Typography sx={{ width: "20%" }} variant="body2">{user.role}</Typography>
-                    <Typography sx={{ width: "20%" }} variant="body2">{user.status}</Typography>
+                    <Typography sx={{ width: "30%", fontWeight: 'bold' }} variant="body2">{userItem.name}</Typography>
+                    <Typography sx={{ width: "30%" }} variant="body2">{userItem.email}</Typography>
+                    <Typography sx={{ width: "25%" }} variant="body2">
+                      <Chip sx={{ opacity: 0.6, px: 1, fontWeight: 700, backgroundColor: getChipColor(userItem.role), color: "black" }} label={userItem.role} size="small" />
+                    </Typography>
+                    <Typography sx={{ width: "20%" }} variant="body2">{userItem.status}</Typography>
                   </Box>
                   <Box sx={{ mr: "7px"}}>
-                    {hasPermission("update") && ( // Check for editing
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => openEditModal(user)}
-                      >
-                        Edit
-                      </Button>
-                    )}
-                    {hasPermission("delete") && ( // Check for deletion
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        color="error"
-                        onClick={() => openDeleteDialog(user)}
-                        sx={{ ml: 1 }}
-                      >
-                        Delete
-                      </Button>
+                    {user && userItem.id === user.id && user.role === "Administrator" ? (
+                      <Tooltip title="You can't change yourself!" placement="left-start">
+                        <Typography variant="subtitle2" color="info" sx={{ pr: 1 }}>Logged in</Typography>
+                      </Tooltip>
+                    ) : (
+                      <>
+                        {hasPermission("update") && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => openEditModal(userItem)}
+                          >
+                            Edit
+                          </Button>
+                        )}
+                        {hasPermission("delete") && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="error"
+                            onClick={() => openDeleteDialog(userItem)}
+                            sx={{ ml: 1 }}
+                          >
+                            Delete
+                          </Button>
+                        )}
+                      </>
                     )}
                   </Box>
                 </Paper>
@@ -318,7 +345,7 @@ const UsersPage: React.FC = () => {
           onClose={handleCloseDeleteDialog}
           onConfirm={handleDeleteUser}
           title="Confirm Deletion"
-          content={`Are you sure you want to delete user "${selectedUser?.name}" (${selectedUser?.email})?`}
+          content={`Are you sure you want to delete user \"${selectedUser?.name}\" (${selectedUser?.email})?`}
           confirmText="Delete"
           cancelText="No"
           confirmColor="error"

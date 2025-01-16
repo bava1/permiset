@@ -15,8 +15,8 @@ const app = express();
 // Setting up CORS for client interaction
 app.use(
   cors({
-    // origin: "http://localhost:3001", 
-    origin: "https://permiset-client-1.vercel.app", 
+    origin: "http://localhost:3001", 
+    //origin: "https://permiset-client-1.vercel.app", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
   })
