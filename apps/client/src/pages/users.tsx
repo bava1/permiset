@@ -275,7 +275,7 @@ const UsersPage: React.FC = () => {
           onClose={handleCloseDeleteDialog}
           onConfirm={handleDeleteUser}
           title="Confirm Deletion"
-          content={`Are you sure you want to delete user \"${selectedUser?.name}\" (${selectedUser?.email})?`}
+          content={`Are you sure you want to delete user "${selectedUser?.name}" (${selectedUser?.email})?`}
           confirmText="Delete"
           cancelText="No"
           confirmColor="error"
