@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: process.env.RENDER_PUBLIC_API_URL || "https://permiset-server-8-latest.onrender.com",
-  // baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
-  // baseURL: "http://localhost:3000" || "",
+  // baseURL: process.env.RENDER_PUBLIC_API_URL || "https://permiset-server-8-latest.onrender.com",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  // baseURL: "http://localhost:3000" || "http://localhost:3000",
 });
 
 // Interceptor for adding token

@@ -109,7 +109,7 @@ router.get("/verify", (req, res) => {
 
 // POST /auth/register - New User Registration
 router.post("/register", async (req, res) => {
-  const { name, email, password, role = "User", status = "active" } = req.body;
+  const { name, email, password, role = "User", status = "active", userImg = ""	 } = req.body;
 
   await db.read();
 
@@ -127,6 +127,7 @@ router.post("/register", async (req, res) => {
     password: await bcrypt.hash(password, 10),
     role,
     status,
+    userImg,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

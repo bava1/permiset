@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
 // Create a new user
 router.post("/", async (req, res) => {
   try {
-    const { name, email, password, role, status } = req.body;
+    const { name, email, password, role, status, userImg = "" } = req.body;
 
     // Проверка на существование email
     const existingUser = db.data?.users.find((user) => user.email === email);
@@ -48,6 +48,7 @@ router.post("/", async (req, res) => {
       email,
       password: hashedPassword,
       role,
+      userImg,
       status,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

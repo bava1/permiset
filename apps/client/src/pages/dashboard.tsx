@@ -46,7 +46,7 @@ export default function Dashboard() {
           General information about users
         </Typography>
         <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
-        <Typography variant="body2">
+        <Typography variant="body1">
           Total registered: {users.length}
           <br />
           Total registered active: {(users.filter((user) => user.status === 'active')).length}

@@ -52,63 +52,113 @@
   "users": [
     {
       "id": "user1",
-      "name": "Role Administrator employee",
-      "email": "administrator@test.com",
+      "name": "Alex Grinberg",
+      "email": "a.grinberg@test.com",
       "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
       "role": "Administrator",
       "status": "active",
-      "createdAt": "2024-12-19T09:05:58.975Z",
-      "updatedAt": "2025-01-16T13:05:31.270Z"
+      "userImg": "img1",
+      "createdAt": "2025-01-17T13:50:47.532Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
     },
     {
       "id": "user2",
-      "name": "Role Manager employee",
-      "email": "manager@test.com",
+      "name": "Martina Petrova",
+      "email": "m.petrova@test.com",
       "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
       "role": "Manager",
-      "status": "active",
-      "createdAt": "2024-12-19T09:05:58.977Z",
-      "updatedAt": "2025-01-16T12:45:45.636Z"
+      "status": "inactive",
+      "userImg": "img2",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
     },
     {
       "id": "user3",
-      "name": "Role User employee",
-      "email": "user@test.com",
+      "name": "Monika Berluskoni",
+      "email": "m.berluskoni@test.com",
       "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
       "role": "User",
       "status": "active",
-      "createdAt": "2024-12-19T09:05:58.977Z",
-      "updatedAt": "2024-12-19T09:05:58.977Z"
+      "userImg": "img3",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
     },
     {
-      "id": "1737028105377",
-      "name": "Bava New",
-      "email": "test123@test.com",
-      "password": "$2b$10$doTNHpR8TRzRGNoEyCNWT.B0QCyP6GansDLvcCIySxZD.nAI0OCL6",
-      "role": "Administrator",
+      "id": "user4",
+      "name": "Tom Berenger",
+      "email": "t.berenger@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "Manager",
       "status": "active",
-      "createdAt": "2025-01-16T11:48:25.377Z",
-      "updatedAt": "2025-01-16T12:40:40.989Z"
+      "userImg": "img4",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
     },
     {
-      "id": "1737032654431",
-      "name": "Bava",
-      "email": "test22@test.com",
-      "password": "$2b$10$9MWVn6oMcPNlKpi.i8bZp.aTvemH54vwqGAmER5chPVEHYx7UmawK",
+      "id": "user5",
+      "name": "Lidia Schevcenko",
+      "email": "l.schevcenko@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
       "role": "User",
       "status": "active",
-      "createdAt": "2025-01-16T13:04:14.431Z",
-      "updatedAt": "2025-01-16T13:04:14.431Z"
+      "userImg": "img5",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
     },
     {
-      "id": "1737033189988",
-      "name": "Bava New 789",
-      "email": "user777@test.com",
-      "password": "$2b$10$OSUnTzpgib2/3c5nZ0jpluhWMu17WrFh3PhSSwSGLxfb0Jt7rzoXq",
+      "id": "user6",
+      "name": "Loretta Mileno-Amborsini",
+      "email": "l.mileno@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "Administrator",
+      "status": "inactive",
+      "userImg": "img6",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
+    },
+    {
+      "id": "user7",
+      "name": "Natalia Kornisevskaja",
+      "email": "n.kornisevskaja@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "User",
+      "status": "active",
+      "userImg": "img7",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
+    },
+    {
+      "id": "user8",
+      "name": "Pavel Novotny",
+      "email": "p.novotny@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "Manager",
+      "status": "active",
+      "userImg": "img9",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.533Z"
+    },
+    {
+      "id": "user9",
+      "name": "Kristina Asmusova",
+      "email": "k.asmus@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
       "role": "Administrator",
       "status": "active",
-      "createdAt": "2025-01-16T13:13:09.988Z",
-      "updatedAt": "2025-01-16T13:13:09.988Z"
+      "userImg": "img13",
+      "createdAt": "2025-01-17T13:50:47.533Z",
+      "updatedAt": "2025-01-17T13:50:47.534Z"
+    },
+    {
+      "id": "user10",
+      "name": "Mariend Cheng",
+      "email": "m.cheng@test.com",
+      "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
+      "role": "User",
+      "status": "inactive",
+      "userImg": "img17",
+      "createdAt": "2025-01-17T13:50:47.534Z",
+      "updatedAt": "2025-01-17T13:50:47.534Z"
     }
   ],
   "auditLogs": [],
@@ -128,6 +178,9 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxIiwiaWF0IjoxNzM2OTU1NDkwLCJleHAiOjE3Mzc1NjAyOTB9.z_xB0IAn1swXORvp6rugMMO6DIKUzatAs7PCOt6OvOQ",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxIiwiaWF0IjoxNzM2OTU1NjkxLCJleHAiOjE3Mzc1NjA0OTF9.c6ChfjOpwev9mY2AP-CLNJJWuWnc_h2ty-Rpoo1o7hY",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzcwMjgxMDUzNzciLCJpYXQiOjE3MzcwMzI3MTcsImV4cCI6MTczNzYzNzUxN30.bO_COo0ppnIJMSGXkm_iab0WELSdYJROY3cpRJY0rjo",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxIiwiaWF0IjoxNzM3MDQwNjQyLCJleHAiOjE3Mzc2NDU0NDJ9.Rtgq2Ymzi604iWyJ5bT3KvWUrxoG_cpFE_SNwoV4aTY"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxIiwiaWF0IjoxNzM3MTAyMjY1LCJleHAiOjE3Mzc3MDcwNjV9.DkjpfARYeFsrLypZeDuahjebMjSPcvhe11HpPUnw384",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIyIiwiaWF0IjoxNzM3MTAyOTE4LCJleHAiOjE3Mzc3MDc3MTh9.lSXWpVyMeIUIgmBTV4jhCtsWqXzx-4mfn09lo3ww0YI",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzcxMTMwNzkzNjkiLCJpYXQiOjE3MzcxMTMwNzksImV4cCI6MTczNzcxNzg3OX0.Rq1BTGESiJD-njl9H1UvoobCZq8c_Upm3V5pMOM-il8",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3MTIxODcwLCJleHAiOjE3Mzc3MjY2NzB9.MvTw6nHY82dav84xUkJKpTljiCumndaIFD31SFbd2LQ"
   ]
 }

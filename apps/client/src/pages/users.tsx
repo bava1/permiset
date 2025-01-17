@@ -2,29 +2,19 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
-  Button,
   CircularProgress,
-  TextField,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  InputAdornment,
-  IconButton,
-  Paper,
   TablePagination,
-  Tooltip,
-  Chip,
+  Button,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { fetchUsers, createUser, updateUser, deleteUser } from "../api/users";
 import UserModal from "../components/UserModal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useAuth } from "../context/AuthContext";
-import Image from 'next/image';
+import UserItem from "../components/UserItem";
 import { User } from "../utils/interfaces/IUser";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
+import UserFilters from "../components/UserFilters";
 
 const UsersPage: React.FC = () => {
   const { hasPermission, user } = useAuth();
@@ -40,13 +30,15 @@ const UsersPage: React.FC = () => {
   // Fields for filtering
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedRole, setSelectedRole] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   // Pagination
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(8);
-  console.log(user);
 
-  // Loading user list
+  const theme = useTheme();
+
+  // Load users
   const loadUsers = async () => {
     setError("");
     try {
@@ -56,11 +48,10 @@ const UsersPage: React.FC = () => {
       const sortedUsers = data.sort((a: any, b: any) => {
         const dateA = new Date(a.createdAt || a.id).getTime();
         const dateB = new Date(b.createdAt || b.id).getTime();
-        return dateB - dateA; // Sort by descending order of creation
+        return dateB - dateA;
       });
 
       setUsers(sortedUsers);
-      console.log(users);
       setFilteredUsers(sortedUsers);
     } catch (err: any) {
       console.error("Failed to fetch users:", err);
@@ -72,10 +63,9 @@ const UsersPage: React.FC = () => {
 
   useEffect(() => {
     loadUsers();
-
   }, []);
 
-  // Updating the list when changing filters
+  // Update filters
   useEffect(() => {
     let updatedUsers = users;
 
@@ -89,8 +79,12 @@ const UsersPage: React.FC = () => {
       updatedUsers = updatedUsers.filter((user) => user.role === selectedRole);
     }
 
+    if (selectedStatus) {
+      updatedUsers = updatedUsers.filter((user) => user.status === selectedStatus);
+    }
+
     setFilteredUsers(updatedUsers);
-  }, [searchQuery, selectedRole, users]);
+  }, [searchQuery, selectedRole, selectedStatus, users]);
 
   const resetSearch = () => {
     setSearchQuery("");
@@ -106,7 +100,7 @@ const UsersPage: React.FC = () => {
     setPage(0);
   };
 
-  // Modal and user deletion handlers
+  // Modal and delete handlers
   const openAddModal = () => {
     setSelectedUser(null);
     setModalMode("add");
@@ -144,7 +138,6 @@ const UsersPage: React.FC = () => {
   }) => {
     try {
       if (userData.id) {
-        // User update
         await updateUser(userData.id, {
           name: userData.name,
           email: userData.email,
@@ -152,7 +145,6 @@ const UsersPage: React.FC = () => {
           status: userData.status,
         });
       } else {
-        // Creating a new user
         await createUser({
           name: userData.name,
           email: userData.email,
@@ -184,7 +176,7 @@ const UsersPage: React.FC = () => {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
-const theme = useTheme();
+
   const getChipColor = (role: string) => {
     switch (role) {
       case "Administrator":
@@ -211,112 +203,50 @@ const theme = useTheme();
           </Typography>
         ) : (
           <Box>
-            {/* Filters */}
             <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-              <TextField
-                label="Search by Name"
-                variant="outlined"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                InputProps={{
-                  endAdornment: searchQuery ? (
-                    <InputAdornment position="end">
-                      <IconButton onClick={resetSearch} size="small">
-                        <ClearIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null,
-                }}
+              <UserFilters
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedRole={selectedRole}
+                setSelectedRole={setSelectedRole}
+                selectedStatus={selectedStatus}
+                setSelectedStatus={setSelectedStatus}
+                resetSearch={resetSearch}
               />
-              <FormControl sx={{ minWidth: 150 }}>
-                <InputLabel>Role</InputLabel>
-                <Select
-                  value={selectedRole}
-                  onChange={(e) => setSelectedRole(e.target.value)}
-                >
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="Administrator">Administrator</MenuItem>
-                  <MenuItem value="User">User</MenuItem>
-                  <MenuItem value="Manager">Manager</MenuItem>
-                </Select>
-              </FormControl>
-              {hasPermission("create") && ( // Check for creation
+              {hasPermission("create") && (
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={openAddModal}
-                  sx={{ ml: "auto" }}
+                  sx={{ ml: "auto", height: "56px", }}
                 >
                   Add User
                 </Button>
               )}
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", ml: "80px", width: "90%" }}>
+
+            {/* Table */}
+            <Box sx={{ display: "flex", alignItems: "center", ml: "90px", width: "90%" }}>
               <Typography sx={{ width: "25%" }} variant="subtitle1"><strong>Name:</strong></Typography>
               <Typography sx={{ width: "24%" }} variant="body2"><strong>Email:</strong></Typography>
-              <Typography sx={{ width: "18%" }} variant="body2"><strong>Role:</strong></Typography>
+              <Typography sx={{ width: "20%" }} variant="body2"><strong>Role:</strong></Typography>
               <Typography sx={{ width: "30%" }} variant="body2"><strong>Status:</strong></Typography>
-              <Typography sx={{ width: "5%" }} variant="body2"><strong>Active:</strong></Typography>
+              <Typography sx={{ width: "5%" }} variant="body2"><strong>Action:</strong></Typography>
             </Box>
-
-            {/* User List */}
             <Box>
-              {paginatedUsers.map((userItem, index) => (
-                <Paper
+              {paginatedUsers.map((userItem) => (
+                <UserItem
                   key={userItem.id}
-                  elevation={1}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: 1,
-                    mb: 1,
-                  }}
-                >
-                  <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", alignItems: "center", width: "80%" }}>
-                    <Image style={{ borderRadius: "4px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"}} src={`/imgContact/img${index + 1}.jpg`} alt="Logo" width={50} height={50} />
-                    <Typography sx={{ width: "30%", fontWeight: 'bold' }} variant="body2">{userItem.name}</Typography>
-                    <Typography sx={{ width: "30%" }} variant="body2">{userItem.email}</Typography>
-                    <Typography sx={{ width: "25%" }} variant="body2">
-                      <Chip sx={{ opacity: 0.6, px: 1, fontWeight: 700, backgroundColor: getChipColor(userItem.role), color: "black" }} label={userItem.role} size="small" />
-                    </Typography>
-                    <Typography sx={{ width: "20%" }} variant="body2">{userItem.status}</Typography>
-                  </Box>
-                  <Box sx={{ mr: "7px"}}>
-                    {user && userItem.id === user.id && user.role === "Administrator" ? (
-                      <Tooltip title="You can't change yourself!" placement="left-start">
-                        <Typography variant="subtitle2" color="info" sx={{ pr: 1 }}>Logged in</Typography>
-                      </Tooltip>
-                    ) : (
-                      <>
-                        {hasPermission("update") && (
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="primary"
-                            onClick={() => openEditModal(userItem)}
-                          >
-                            Edit
-                          </Button>
-                        )}
-                        {hasPermission("delete") && (
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            color="error"
-                            onClick={() => openDeleteDialog(userItem)}
-                            sx={{ ml: 1 }}
-                          >
-                            Delete
-                          </Button>
-                        )}
-                      </>
-                    )}
-                  </Box>
-                </Paper>
+                  userItem={userItem}
+                  hasPermission={hasPermission}
+                  openEditModal={openEditModal}
+                  openDeleteDialog={openDeleteDialog}
+                  user={user}
+                  getChipColor={getChipColor}
+                />
               ))}
             </Box>
-            {filteredUsers.length > 8 && (
+            {filteredUsers.length > 6 && (
               <TablePagination
                 component="div"
                 count={filteredUsers.length}
@@ -345,7 +275,7 @@ const theme = useTheme();
           onClose={handleCloseDeleteDialog}
           onConfirm={handleDeleteUser}
           title="Confirm Deletion"
-          content={`Are you sure you want to delete user "${selectedUser?.name}" (${selectedUser?.email})?`}
+          content={`Are you sure you want to delete user \"${selectedUser?.name}\" (${selectedUser?.email})?`}
           confirmText="Delete"
           cancelText="No"
           confirmColor="error"
