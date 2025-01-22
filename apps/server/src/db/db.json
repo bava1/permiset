@@ -144,10 +144,10 @@
       "email": "k.asmus@test.com",
       "password": "$2b$10$7E2eJlqPL5FSlq1SukjIOu.LZEeteXeEWwwXx6La/PNGoopoNHQHW",
       "role": "Administrator",
-      "status": "active",
+      "status": "inactive",
       "userImg": "img13",
       "createdAt": "2025-01-17T13:50:47.533Z",
-      "updatedAt": "2025-01-17T13:50:47.534Z"
+      "updatedAt": "2025-01-22T12:43:38.914Z"
     },
     {
       "id": "user10",
@@ -159,6 +159,17 @@
       "userImg": "img17",
       "createdAt": "2025-01-17T13:50:47.534Z",
       "updatedAt": "2025-01-17T13:50:47.534Z"
+    },
+    {
+      "id": "1737380887438",
+      "name": "Bava New",
+      "email": "test@test.com",
+      "password": "$2b$10$HCsE40TB7QuzxIIgoVh4DeOKhl7VGcxG/hbWdtPHpwJYaceAWkKay",
+      "role": "Administrator",
+      "userImg": "",
+      "status": "inactive",
+      "createdAt": "2025-01-20T13:48:07.438Z",
+      "updatedAt": "2025-01-20T13:49:00.079Z"
     }
   ],
   "auditLogs": [],
@@ -181,6 +192,13 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxIiwiaWF0IjoxNzM3MTAyMjY1LCJleHAiOjE3Mzc3MDcwNjV9.DkjpfARYeFsrLypZeDuahjebMjSPcvhe11HpPUnw384",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIyIiwiaWF0IjoxNzM3MTAyOTE4LCJleHAiOjE3Mzc3MDc3MTh9.lSXWpVyMeIUIgmBTV4jhCtsWqXzx-4mfn09lo3ww0YI",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MzcxMTMwNzkzNjkiLCJpYXQiOjE3MzcxMTMwNzksImV4cCI6MTczNzcxNzg3OX0.Rq1BTGESiJD-njl9H1UvoobCZq8c_Upm3V5pMOM-il8",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3MzU4ODQ4LCJleHAiOjE3Mzc5NjM2NDh9.PQThbYlu_a9HRoOmqKa8fH7Kqdww7jkjKg38xdM8sUM"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3MzcyNjQyLCJleHAiOjE3Mzc5Nzc0NDJ9.fzz6uJfP2CaxLvIX4ZFfCi4uTATOeoe0HnsHJrKGRto",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3NDQ5MDI5LCJleHAiOjE3MzgwNTM4Mjl9.IPAcK7k49vtfSuIQyzKGKiTNJXDMPxKhsfhptRaQ5Rg",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3NDU4NjEyLCJleHAiOjE3MzgwNjM0MTJ9.Ek7NmTyb4XW6UbrpP8_6EUMWp7esAn26CDKi5Ev1DDQ",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3NDU4NjUwLCJleHAiOjE3MzgwNjM0NTB9.m0BACIKGfRs9zd2nR6u258qmKK1DkRfqQ9koQYDbVAQ",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3NDYwNDE5LCJleHAiOjE3MzgwNjUyMTl9.bfMyym2YU9pi9oZQcVjDmz-D4ODXj1yAxO-FakuZU2c",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3NDY5Mzg5LCJleHAiOjE3MzgwNzQxODl9.aSHk45R3wY8WmXhc6Kjdo-dxzdRBwWuUvzt3NZEKJX0",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI2IiwiaWF0IjoxNzM3NTQ1MTQ5LCJleHAiOjE3MzgxNDk5NDl9.M0N8LzXBs-LAvjXXTabHtq-KHde2-ZxVPITqzTqE4jY",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXI5IiwiaWF0IjoxNzM3NTQ5ODM3LCJleHAiOjE3MzgxNTQ2Mzd9.3gGS7-opCiD81mHrZ7c_rWBDaBgAGHFBLHjTM4dPpOs"
   ]
 }

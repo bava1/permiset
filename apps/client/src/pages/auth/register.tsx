@@ -35,7 +35,7 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // Очищаем ошибки перед новой попыткой
+    setError("");
 
     try {
       // Validate input
@@ -53,7 +53,7 @@ export default function Register() {
       if (err instanceof ZodError) {
         setError(err.errors[0]?.message || "Validation error");
       } else if (err.message) {
-        setError(err.message); // Отображаем сообщение от сервера
+        setError(err.message); 
       } else {
         console.error("Unexpected error during registration:", err);
         setError("An unexpected error occurred. Please try again.");

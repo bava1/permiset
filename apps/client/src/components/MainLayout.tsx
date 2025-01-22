@@ -27,6 +27,7 @@ import { NAV_ITEMS } from "../config/NavItems";
 import { MainLayoutProps } from "../utils/interfaces/IMainLayoutProps";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Zoom from '@mui/material/Zoom';
+import HeaderClockCalendar from "./HeaderClockCalendar";
 
 const drawerWidth = 240;
 
@@ -111,21 +112,22 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
           {/* Right side: user icon */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Tooltip 
-            sx={{ p: 2 }} 
-            title="You don't have any messages yet." 
-            placement="bottom" 
-            arrow={true} 
-            slots={{transition: Zoom,}}>
-            <NotificationsNoneIcon sx={{ mr: 2, fontSize: "30px", opacity: 0.8 }} />
-          </Tooltip>
+            <HeaderClockCalendar />
+            <Tooltip 
+              sx={{ p: 2 }} 
+              title="You don't have any messages yet." 
+              placement="bottom" 
+              arrow={true} 
+              slots={{transition: Zoom,}}>
+              <NotificationsNoneIcon sx={{ mr: 2, fontSize: "30px", opacity: 0.8 }} />
+            </Tooltip>
             <Tooltip title="User Options" slots={{transition: Zoom,}}>
               <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
               {user?.userImg ? (
                 <Avatar
                     src={`/imgContact/${user.userImg}.jpg`}
                     alt={user?.name || "User"}
-                    sx={{ width: 45, height: 45 }}
+                    sx={{ width: 45, height: 45, boxShadow: 2 }}
                   />
                 ) : (
                   <Avatar sx={{ color: "blue", width: 45, height: 45 }}>

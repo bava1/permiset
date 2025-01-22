@@ -13,19 +13,19 @@ import {
 } from "@mui/material";
 
 const Settings: React.FC = () => {
-  const [roles, setRoles] = useState<any[]>([]); // Список ролей с сервера
-  const [editedRoles, setEditedRoles] = useState<Record<string, string[]>>({}); // Локальное состояние для редактирования ролей
+  const [roles, setRoles] = useState<any[]>([]); 
+  const [editedRoles, setEditedRoles] = useState<Record<string, string[]>>({}); 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    // Загрузка ролей при монтировании компонента
+    // Loading roles when mounting a component
     const loadRoles = async () => {
       try {
         setLoading(true);
         const rolesData = await fetchRoles();
         setRoles(rolesData);
-        // Инициализируем локальное состояние редактирования
+        // Initialize the local editing state
         const initialEditedRoles = rolesData.reduce(
           (acc: Record<string, string[]>, role: any) => ({
             ...acc,
@@ -50,9 +50,9 @@ const Settings: React.FC = () => {
         ? [...prev[roleId], permission]
         : prev[roleId].filter((p) => p !== permission);
 
-      // Гарантируем, что хотя бы одно разрешение останется
+      // We guarantee that at least one resolution will remain
       if (updatedPermissions.length === 0) {
-        return prev; // Если попытка удалить последнее разрешение, ничего не меняем
+        return prev; // If you try to delete the last permission, do not change anything
       }
 
       return { ...prev, [roleId]: updatedPermissions };

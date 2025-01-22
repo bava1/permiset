@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 import { z, ZodError } from "zod";
 import { useAuth } from "../../context/AuthContext";
@@ -15,10 +15,20 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const router = useRouter();
 
   // Accessing AuthContext
   const { login } = useAuth();
+
+  useEffect(() => {
+    try {
+      loginSchema.parse({ email, password });
+      setIsValid(true);
+    } catch {
+      setIsValid(false);
+    }
+  }, [email, password]); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,13 +38,13 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // Очищаем ошибки перед новой попыткой
+    setError(""); // Clearing errors before trying again
 
     try {
       setLoading(true);
       const validatedData = loginSchema.parse({ email, password });
       await login(validatedData.email, validatedData.password);
-      router.push("/"); // Перенаправляем на главную страницу
+      router.push("/"); // Redirect to the main page
     } catch (err: any) {
       if (err instanceof ZodError) {
         setError(err.errors[0]?.message || "Validation error");
@@ -44,7 +54,7 @@ export default function Login() {
         setError("An unexpected error occurred. Please try again.");
       }
     } finally {
-      setLoading(false); // Гарантируем сброс загрузки
+      setLoading(false); // We guarantee a boot reset
     }
   };
 
@@ -65,6 +75,7 @@ export default function Login() {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          id="login-form-email-input"
         />
         <TextField
           label="Password"
@@ -74,13 +85,14 @@ export default function Login() {
           onChange={handleChange}
           fullWidth
           margin="normal"
+          id="login-form-password-input"
         />
         <Button
           type="submit"
           variant="contained"
           color="primary"
           fullWidth
-          disabled={loading}
+          disabled={!isValid || loading}
           sx={{ mt: 2 }}
         >
           {loading ? "Loading..." : "Login"}

@@ -11,16 +11,9 @@ import {
   IconButton,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import { UserFiltersProps } from "../utils/interfaces/IUserFiltersProps";
 
-interface UserFiltersProps {
-  searchQuery: string;
-  setSearchQuery: (value: string) => void;
-  selectedRole: string;
-  setSelectedRole: (value: string) => void;
-  selectedStatus: string;
-  setSelectedStatus: (value: string) => void;
-  resetSearch: () => void;
-}
+
 
 const UserFilters: React.FC<UserFiltersProps> = ({
   searchQuery,

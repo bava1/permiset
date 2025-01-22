@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import React from "react"; 
 
@@ -20,11 +20,45 @@ export default function Home() {
   return (
     <>
       <h1>Welcome { user?.name }</h1>
-      <h4>You are logged in with permissions: { user?.role }</h4>
-      <h4>Your email: { user?.email }</h4>
-      <h4>Your status: { user?.status }</h4>
-      <h4>Date of creation: { createDate }</h4>
-      <h4>Last modified date: { updateDate }</h4> 
+      <Stack
+        direction="row"
+        sx={{ mb: 1 }}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={1}>
+          <span>You are logged in with permissions:</span>
+          <h4>{ user?.role }</h4>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{ mb: 1 }}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={1}>
+          <span>Your email: </span>
+          <h4>{ user?.email }</h4>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{ mb: 1 }}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={1}>
+          <span>Your status: </span>
+          <h4>{ user?.status }</h4>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{ mb: 1 }}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={1}>
+          <span>Date of creation: </span>
+          <h4>{ createDate }</h4>
+      </Stack>
+      <Stack
+        direction="row"
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={1}>
+          <span>Last modified date: </span>
+          <h4>{ updateDate }</h4>
+      </Stack>
     </>
   );
 }

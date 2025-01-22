@@ -1,15 +1,9 @@
 import React from "react";
 import { Box, Typography, Button, Tooltip, Chip, Paper } from "@mui/material";
 import Image from "next/image";
+import { UserItemProps } from "../utils/interfaces/IUserItemProps";
 
-interface UserItemProps {
-  userItem: any;
-  hasPermission: (permission: string) => boolean;
-  openEditModal: (user: any) => void;
-  openDeleteDialog: (user: any) => void;
-  user: any;
-  getChipColor: (role: string) => string;
-}
+
 
 const UserItem: React.FC<UserItemProps> = ({
   userItem,
@@ -24,7 +18,7 @@ const UserItem: React.FC<UserItemProps> = ({
       <Image
         style={{
           borderRadius: "4px",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 2px 1px -1px rgba(0, 0, 0, 0.4)",
         }}
         src={`/imgContact/${userItem.userImg}.jpg`}
         alt="Logo"
@@ -45,7 +39,7 @@ const UserItem: React.FC<UserItemProps> = ({
           color: "#fff",
           fontSize: 20,
           fontWeight: "bold",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 2px 1px -1px rgba(0, 0, 0, 0.3)",
         }}
       >
         {userItem.name ? userItem.name.charAt(0).toUpperCase() : "?"}
@@ -55,7 +49,7 @@ const UserItem: React.FC<UserItemProps> = ({
 
   return (
     <Paper
-      elevation={1}
+      elevation={2}
       sx={{
         display: "flex",
         justifyContent: "space-between",
@@ -93,6 +87,7 @@ const UserItem: React.FC<UserItemProps> = ({
               fontWeight: 700,
               backgroundColor: getChipColor(userItem.role),
               color: "black",
+              boxShadow: 1
             }}
             label={userItem.role}
             size="small"

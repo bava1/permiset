@@ -1,7 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { PaletteOptions } from "@mui/material/styles/createPalette";
 
-// Расширение типов для customColors
 declare module "@mui/material/styles" {
   interface Palette {
     customColors: {
