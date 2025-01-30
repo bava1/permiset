@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  // baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  baseURL: process.env.RENDER_EXPRESS_API_URL || "https://permiset-express-latest.onrender.com",
 });
 
 // ✅ Теперь используем `sessionStorage`, чтобы токен не терялся при смене языка
