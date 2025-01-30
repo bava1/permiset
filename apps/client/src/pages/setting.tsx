@@ -11,13 +11,15 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const Settings: React.FC = () => {
   const [roles, setRoles] = useState<any[]>([]); 
   const [editedRoles, setEditedRoles] = useState<Record<string, string[]>>({}); 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-
+  const permissions:string[] = ["read", "create", "update", "delete", "change_roles"];
+  const { t } = useTranslation("common");
   useEffect(() => {
     // Loading roles when mounting a component
     const loadRoles = async () => {
@@ -88,17 +90,17 @@ const Settings: React.FC = () => {
 
   return (
     <Box>
-      <h1>Roles Management</h1>
+      <h1>{t("settings")}</h1>
       <List>
         {roles.map((role) => (
-          <ListItem key={role.id} sx={{ mb: 3 }}>
+          <ListItem key={role.id} sx={{ mb: 2 }}>
             <Box sx={{ width: "100%" }}>
               <Typography variant="h6" gutterBottom>
                 {role.name}
               </Typography>
               <FormControl component="fieldset">
                 <FormGroup>
-                  {["read", "create", "update", "delete", "change_roles"].map((permission) => (
+                  {permissions.map((permission) => (
                     <FormControlLabel
                       key={permission}
                       control={

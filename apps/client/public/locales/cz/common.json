@@ -1,0 +1,62 @@
+{
+    "menu_home": "Domu",
+    "menu_dashboard": "Panel",
+    "menu_users": "Uživatelé",
+    "menu_chat": "AI Chat",
+    "menu_blog": "Blog",
+    "menu_issues": "Problémy",
+    "menu_logs": "Protokoly",
+    "menu_docs": "Dokumentace",
+    "menu_analytics": "Analytika",
+    "menu_settings": "Nastavení",
+
+    "home_hello": "Ahoj, světe!",
+    "home_welcome": "Vítejte",
+    "home_you_are_logged_in_with_permissions": "Jste přihlášeni s oprávněními:",
+    "home_your_email": "Váš e-mail:",
+    "home_your_status": "Váš stav:",
+    "home_date_of_creation": "Datum vytvoření:",
+    "home_last_modified_date": "Datum poslední úpravy:",
+  
+    "dashboard_welcome_to_Dashboard": "Vítejte na ovládacím panelu!",
+    "dashboard_general_information_about_users": "Obecné informace o uživatelích",
+    "dashboard_total_registered": "Celkem registrovaných",
+    "dashboard_total_registered_active": "Celkem aktivních uživatelů",
+    "dashboard_total_registered_inactive": "Celkem neaktivních uživatelů",
+    "dashboard_total_registered_role_Administrator": "Celkem registrovaných - Administrátor",
+    "dashboard_total_registered_role_Manager": "Celkem registrovaných - Manažer",
+    "dashboard_total_registered_role_User": "Celkem registrovaných - Uživatel",
+  
+    "users_users_Management": "Správa uživatelů",
+  
+    "chat_ai_Chat": "AI Chat",
+    "chat_chat_for_communication_with_artificial": "Chat pro komunikaci s umělou inteligencí",
+    "chat_this_component_is_under_development": "Tato komponenta je ve vývoji.",
+    "chat_thank_you_for_your_understanding...": "Děkujeme za pochopení...",
+  
+    "blog": "Blog",
+    "blog_a_blog_will_be_created_for_you_here": "Zde bude vytvořen váš blog",
+    "blog_this_component_is_under_development": "Tato komponenta je ve vývoji.",
+    "blog_thank_you_for_your_understanding...": "Děkujeme za pochopení...",
+  
+    "issues": "Problémy",
+    "issues_solved_issues_will_be_described": "Vyřešené problémy zde budou popsány v budoucnu.",
+    "issues_this_component_is_under_development": "Tato komponenta je ve vývoji.",
+    "issues_thank_you_for_your_understanding...": "Děkujeme za pochopení...",
+  
+    "logs": "Logy",
+    "logs_manage_your_logs_here.": "Spravujte zde své logy.",
+  
+    "docs": "Dokumentace",
+    "docs_link_to_the": "Odkaz na zdrojový kód projektu...",
+    "docs_to_rest_api": "Odkaz na dokumentaci k REST API...",
+    "docs_operating_instructions": "Návod k použití:",
+  
+    "analytics": "Analytika",
+    "analytics_here_you_will_find_analytical_data.": "Zde najdete analytická data.",
+    "analytics_this_component_is_under_development": "Tato komponenta je ve vývoji.",
+    "analytics_thank_you_for_your_understanding...": "Děkujeme za pochopení...",
+  
+    "settings": "Správa rolí"
+  }
+  

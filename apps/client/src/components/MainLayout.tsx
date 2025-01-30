@@ -23,11 +23,12 @@ import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 import Image from 'next/image';
-import { NAV_ITEMS } from "../config/NavItems";
 import { MainLayoutProps } from "../utils/interfaces/IMainLayoutProps";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Zoom from '@mui/material/Zoom';
 import HeaderClockCalendar from "./HeaderClockCalendar";
+import LanguageSwitcher from "./LanguageSwitcher";
+import useNavItems from "../config/NavItems";
 
 const drawerWidth = 240;
 
@@ -38,7 +39,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Screen less than 996px
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(!isSmallScreen); // The driver is only open for large screens
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(!isSmallScreen);
+  const NAV_ITEMS = useNavItems(); // The driver is only open for large screens
 
   const handleNavigation = (path: string) => {
     router.push(path);
@@ -77,7 +79,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             },
           }}
         >
-          <ListItemIcon>{item.icon}</ListItemIcon>
+          <ListItemIcon sx={{ minWidth: 45 }}>{item.icon}</ListItemIcon>
           <ListItemText primary={item.label} />
         </ListItemButton>
       ))}
@@ -105,7 +107,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               <MenuIcon />
             </IconButton>
             <Box>
-              <Image style={{marginTop: "4px"}} src="/img/Logo1.png" alt="Logo" width={170} height={45} />
+              <Image style={{marginTop: "4px", marginLeft: "4px"}} src="/img/Logo1.png" alt="Logo" width={170} height={45} />
             </Box>
           </Box>
 
@@ -113,6 +115,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           {/* Right side: user icon */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <HeaderClockCalendar />
+            <LanguageSwitcher />
             <Tooltip 
               sx={{ p: 2 }} 
               title="You don't have any messages yet." 

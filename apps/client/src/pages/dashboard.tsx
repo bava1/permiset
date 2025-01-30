@@ -10,6 +10,7 @@ import { fetchUsers } from "../api/users";
 import { set } from 'zod';
 import { useEffect, useState } from 'react';
 import { User } from '../utils/interfaces/IUser';
+import { useTranslation } from 'react-i18next';
 
 const bull = (
   <Box
@@ -23,6 +24,7 @@ const bull = (
 export default function Dashboard() {
   const [users, setUsers] = React.useState<User[]>([]);
   const [error, setError] = useState<string | null>(null); 
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -39,25 +41,25 @@ export default function Dashboard() {
   
   return (
     <>
-      <h1>Welcome to Dashboard!</h1>
+      <h1>{t("dashboard_welcome_to_Dashboard")}</h1>
       <Card sx={{ maxWidth: 500 }}>
         <CardContent>
           <Typography variant="h5" component="div">
-            General information about users
+            {t("dashboard_general_information_about_users")}
           </Typography>
           <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
           <Typography variant="body1">
-            Total registered: {users.length}
+            {t("dashboard_total_registered")}: {users.length}
             <br />
-            Total registered active: {(users.filter((user) => user.status === 'active')).length}
+            {t("dashboard_total_registered_active")}: {(users.filter((user) => user.status === 'active')).length}
             <br />
-            Total registered inactive: {(users.filter((user) => user.status === 'inactive')).length}
+            {t("dashboard_total_registered_inactive")}: {(users.filter((user) => user.status === 'inactive')).length}
             <br />
-            Total registered role - Administrator: {(users.filter((user) => user.role === 'Administrator')).length}
+            {t("dashboard_total_registered_role_Administrator")}: {(users.filter((user) => user.role === 'Administrator')).length}
             <br />
-            Total registered role - Manager: {(users.filter((user) => user.role === 'Manager')).length}
+            {t("dashboard_total_registered_role_Manager")}: {(users.filter((user) => user.role === 'Manager')).length}
             <br />
-            Total registered role - User: {(users.filter((user) => user.role === 'User')).length}
+            {t("dashboard_total_registered_role_User")}: {(users.filter((user) => user.role === 'User')).length}
           </Typography>
         </CardContent>
         <CardActions>

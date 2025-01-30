@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import { CircularProgress, Box } from "@mui/material";
@@ -7,29 +7,32 @@ import { ProtectedRouteProps } from "../utils/interfaces/IProtectedRouteProps";
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
   const { isAuthenticated, isAuthLoading, user, logout } = useAuth();
   const router = useRouter();
+  const [isVerified, setIsVerified] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const verifyAccess = async () => {
-      if (isAuthLoading) return; // Waiting for the download to complete
+      console.log("🔹 Проверяем доступ:", { isAuthLoading, isAuthenticated, user });
+      if (isAuthLoading) return; // Ждём загрузки
 
       if (!isAuthenticated) {
-        console.warn("User not authenticated. Redirecting...");
-        await logout();
-        router.replace("/auth/login"); 
+        console.warn("❌ Пользователь не аутентифицирован. Ожидаем перед редиректом...");
         return;
       }
 
       if (roles && !roles.includes(user?.role || "")) {
-        console.warn("Access denied. Redirecting...");
+        console.warn("❌ Доступ запрещен. Недостаточно прав.");
         await logout();
-        router.replace("/auth/login"); 
+        router.replace("/auth/login");
       }
+
+      setIsVerified(true);
     };
 
     verifyAccess();
   }, [isAuthenticated, isAuthLoading, user, roles, router, logout]);
 
-  if (isAuthLoading) {
+  // Пока аутентификация загружается – показываем лоадер
+  if (isAuthLoading || !isVerified) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
         <CircularProgress />

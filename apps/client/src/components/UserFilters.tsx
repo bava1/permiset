@@ -14,7 +14,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { UserFiltersProps } from "../utils/interfaces/IUserFiltersProps";
 
 
-
 const UserFilters: React.FC<UserFiltersProps> = ({
   searchQuery,
   setSearchQuery,

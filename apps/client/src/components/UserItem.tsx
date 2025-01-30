@@ -94,11 +94,11 @@ const UserItem: React.FC<UserItemProps> = ({
           />
         </Typography>
         {userItem.status === "active" ? (
-          <Typography sx={{ width: "20%", color: "green" }} variant="body2">
+          <Typography sx={{ width: "20%", color: "green", opacity: 0.7 }} variant="body2">
             Active
           </Typography>
         ) : (
-            <Typography sx={{ width: "20%", color: "red" }} variant="body2">
+            <Typography sx={{ width: "20%", color: "red", opacity: 0.7 }} variant="body2">
             Inactive
           </Typography>
         )}

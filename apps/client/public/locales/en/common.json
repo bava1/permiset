@@ -1,0 +1,64 @@
+{
+    
+    "menu_home": "Home",
+    "menu_dashboard": "Dashboard",
+    "menu_users": "Users",
+    "menu_chat": "Chat AI",
+    "menu_blog": "Blog",
+    "menu_issues": "Issues",
+    "menu_logs": "Logs",
+    "menu_docs": "Docs",
+    "menu_analytics": "Analytics",
+    "menu_settings": "Settings",
+
+    
+    "home_hello": "Hello, World!",
+    "home_welcome": "Welcome",
+    "home_you_are_logged_in_with_permissions": "You are logged in with permissions:",
+    "home_your_email": "Your email:",
+    "home_your_status": "Your status:",
+    "home_date_of_creation": "Date of creation:",
+    "home_last_modified_date": "Last modified date:",
+
+    "dashboard_welcome_to_Dashboard": "Welcome to Dashboard!",
+    "dashboard_general_information_about_users": "General information about users",
+    "dashboard_total_registered": "Total registered",
+    "dashboard_total_registered_active": "Total registered active",
+    "dashboard_total_registered_inactive": "Total registered inactive",
+    "dashboard_total_registered_role_Administrator": "Total registered role - Administrator",
+    "dashboard_total_registered_role_Manager": "Total registered role - Manager",
+    "dashboard_total_registered_role_User": "Total registered role - User",
+
+    "users_users_Management": "Users Management",
+
+    "chat_ai_Chat": "AI Chat",
+    "chat_chat_for_communication_with_artificial": "Chat for communication with artificial intelligence",
+    "chat_this_component_is_under_development": "This component is under development.",
+    "chat_thank_you_for_your_understanding...": "Thank you for your understanding...",
+
+    "blog": "Blog",
+    "blog_a_blog_will_be_created_for_you_here": "A blog will be created for you here",
+    "blog_this_component_is_under_development": "This component is under development.",
+    "blog_thank_you_for_your_understanding...": "Thank you for your understanding...",
+
+    "issues": "Issues",
+    "issues_solved_issues_will_be_described": "Solved issues will be described here in the future.",
+    "issues_this_component_is_under_development": "This component is under development.",
+    "issues_thank_you_for_your_understanding...": "Thank you for your understanding...",
+
+    "logs": "Logs",
+    "logs_manage_your_logs_here.": "Manage your logs here.",
+
+    "docs": "Docs",
+    "docs_link_to_the": "Link to the project source code...",
+    "docs_to_rest_api": "Link to REST API documentation...",
+    "docs_operating_instructions": "Operating instructions:",
+
+
+    "analytics": "Analytics",
+    "analytics_here_you_will_find_analytical_data.": "Here you will find analytical data.",
+    "analytics_this_component_is_under_development": "This component is under development.",
+    "analytics_thank_you_for_your_understanding...": "Thank you for your understanding...",
+    
+    "settings": "Roles Management"
+}

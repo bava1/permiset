@@ -1,77 +1,41 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: process.env.RENDER_EXPRESS_API_URL || "https://permiset-express-latest.onrender.com",
-  // baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
-  // baseURL: "http://localhost:3000" || "http://localhost:3000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
 });
 
-// Interceptor for adding token
+// ✅ Теперь используем `sessionStorage`, чтобы токен не терялся при смене языка
 axiosClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== "undefined") {
+      const token = sessionStorage.getItem("auth_token") || localStorage.getItem("auth_token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-axiosClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    console.error("Interceptor error:", error);
-    return Promise.reject(error);
-  }
-);
-
-axiosClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      console.error("Unauthorized. Redirecting to login.");
-      localStorage.removeItem("auth_token");
-      window.location.href = "/auth/login";
-    }
-    return Promise.reject(error);
-  }
-);
-
-// Interceptor for handling responses
-/*
+// ✅ Исправляем обработку 401 → больше НЕ вызываем logout
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      const refreshToken = localStorage.getItem("refresh_token");
-
-      if (!refreshToken) {
-        console.warn("No refresh token available, logout.");
-        return Promise.reject(error);
-      }
-
-      try {
-        const { data } = await axiosClient.post("/auth/refresh", { refreshToken });
-        localStorage.setItem("auth_token", data.token);
-
-        // Обновляем токен в запросе и повторяем его
-        error.config.headers.Authorization = `Bearer ${data.token}`;
-        return axiosClient.request(error.config);
-      } catch (refreshError) {
-        console.error("Failed to refresh token:", refreshError);
-
-        // Очищаем данные при неудачном обновлении токена
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("refresh_token");
-
-        return Promise.reject(refreshError);
-      }
+      console.warn("⚠️ Ошибка 401: Токен недействителен, но logout НЕ выполняем.");
     }
-
     return Promise.reject(error);
   }
 );
-*/
 
 export default axiosClient;
+
+
+
+
+
+
+
+
+    // baseURL: process.env.RENDER_EXPRESS_API_URL || "https://permiset-express-latest.onrender.com",

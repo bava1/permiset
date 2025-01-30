@@ -14,4 +14,3 @@ export const verifyToken = async () => {
   const response = await axiosClient.get("/auth/verify");
   return response.data;
 };
-

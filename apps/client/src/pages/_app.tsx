@@ -6,11 +6,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../theme";
 import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../components/MainLayout";
+import "../i18n"; 
+import { appWithTranslation } from "next-i18next";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+
+function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  // List of routes that do not require authentication
   const unprotectedRoutes = ["/auth/login", "/auth/register", "/page404"];
   const isUnprotectedRoute = unprotectedRoutes.includes(router.pathname);
 
@@ -31,3 +33,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </AuthProvider>
   );
 }
+
+export default appWithTranslation(MyApp);

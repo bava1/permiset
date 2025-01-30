@@ -1,0 +1,62 @@
+{
+    
+    "menu_home": "Главная",
+    "menu_dashboard": "Панель",
+    "menu_users": "Пользователи",
+    "menu_chat": "Чат ИИ",
+    "menu_blog": "Блог",
+    "menu_issues": "Проблемы",
+    "menu_logs": "Логи",
+    "menu_docs": "Документация",
+    "menu_analytics": "Аналитика",
+    "menu_settings": "Настройки",
+    
+    "home_hello": "Привет, мир!",
+    "home_welcome": "Добро пожаловать",
+    "home_you_are_logged_in_with_permissions": "Вы вошли в систему с правами:",
+    "home_your_email": "Ваш email:",
+    "home_your_status": "Ваш статус:",
+    "home_date_of_creation": "Дата создания:",
+    "home_last_modified_date": "Дата последнего изменения:",
+
+    "dashboard_welcome_to_Dashboard": "Добро пожаловать в Панель управления!",
+    "dashboard_general_information_about_users": "Общая информация о пользователях",
+    "dashboard_total_registered": "Всего зарегистрировано",
+    "dashboard_total_registered_active": "Всего активных пользователей",
+    "dashboard_total_registered_inactive": "Всего неактивных пользователей",
+    "dashboard_total_registered_role_Administrator": "Всего зарегистрированных с ролью - Администратор",
+    "dashboard_total_registered_role_Manager": "Всего зарегистрированных с ролью - Менеджер",
+    "dashboard_total_registered_role_User": "Всего зарегистрированных с ролью - Пользователь",
+
+    "users_users_Management": "Управление пользователями",
+
+    "chat_ai_Chat": "Чат с ИИ",
+    "chat_chat_for_communication_with_artificial": "Чат для общения с искусственным интеллектом",
+    "chat_this_component_is_under_development": "Этот компонент находится в разработке.",
+    "chat_thank_you_for_your_understanding...": "Спасибо за ваше понимание...",
+
+    "blog": "Блог",
+    "blog_a_blog_will_be_created_for_you_here": "Здесь будет создан ваш блог",
+    "blog_this_component_is_under_development": "Этот компонент находится в разработке.",
+    "blog_thank_you_for_your_understanding...": "Спасибо за ваше понимание...",
+
+    "issues": "Проблемы",
+    "issues_solved_issues_will_be_described": "В будущем здесь будут описаны решенные проблемы.",
+    "issues_this_component_is_under_development": "Этот компонент находится в разработке.",
+    "issues_thank_you_for_your_understanding...": "Спасибо за ваше понимание...",
+
+    "logs": "Журналы",
+    "logs_manage_your_logs_here.": "Управляйте своими журналами здесь.",
+
+    "docs": "Документация",
+    "docs_link_to_the": "Ссылка на исходный код проекта...",
+    "docs_to_rest_api": "Ссылка на документацию REST API...",
+    "docs_operating_instructions": "Инструкция по эксплуатации:",
+
+    "analytics": "Аналитика",
+    "analytics_here_you_will_find_analytical_data.": "Здесь вы найдете аналитические данные.",
+    "analytics_this_component_is_under_development": "Этот компонент находится в разработке.",
+    "analytics_thank_you_for_your_understanding...": "Спасибо за ваше понимание...",
+    
+    "settings": "Управление ролями"
+}

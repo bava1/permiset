@@ -6,20 +6,22 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useTranslation } from 'react-i18next';
 
 export default function Docs() {
+  const { t } = useTranslation("common");
   return (
     <>
-      <h1>Docs</h1>
-      <p>Link to the project source code...</p>
+      <h1>{t("docs")}</h1>
+      <p>{t("docs_link_to_the")}...</p>
       <Link href="https://github.com/bava1/permiset" variant="h6" target="_blank" sx={{ mb: 2 }}>
         {'Project on GitHub...'}
       </Link>
-      <p>Link to REST API documentation...</p>
+      <p>{t("docs_link_to_the")}...</p>
       <Link href="https://permiset-express-latest.onrender.com/api-docs/" variant="h6" target="_blank">
         {'Go to Swagger API documentation...'}
       </Link>
-      <h3>Operating instructions:</h3>
+      <h3>{t("docs_operating_instructions")}</h3>
 
       <Box sx={{ width: '100%', maxWidth: 860 }}>
         <Accordion>

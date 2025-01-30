@@ -1,0 +1,62 @@
+{
+    "menu_home": "Головна",
+    "menu_dashboard": "Панель",
+    "menu_users": "Користувачі",
+    "menu_chat": "Чат ІІ",
+    "menu_blog": "Блог",
+    "menu_issues": "Проблеми",
+    "menu_logs": "Логи",
+    "menu_docs": "Документація",
+    "menu_analytics": "Аналітика",
+    "menu_settings": "Налаштування",
+
+    "home_hello": "Привіт, світе!",
+    "home_welcome": "Ласкаво просимо",
+    "home_you_are_logged_in_with_permissions": "Ви увійшли з правами доступу:",
+    "home_your_email": "Ваша електронна пошта:",
+    "home_your_status": "Ваш статус:",
+    "home_date_of_creation": "Дата створення:",
+    "home_last_modified_date": "Дата останньої зміни:",
+  
+    "dashboard_welcome_to_Dashboard": "Ласкаво просимо до Панелі управління!",
+    "dashboard_general_information_about_users": "Загальна інформація про користувачів",
+    "dashboard_total_registered": "Зареєстровано всього",
+    "dashboard_total_registered_active": "Загальна кількість активних користувачів",
+    "dashboard_total_registered_inactive": "Загальна кількість неактивних користувачів",
+    "dashboard_total_registered_role_Administrator": "Загальна кількість адміністраторів",
+    "dashboard_total_registered_role_Manager": "Загальна кількість менеджерів",
+    "dashboard_total_registered_role_User": "Загальна кількість користувачів",
+  
+    "users_users_Management": "Керування користувачами",
+  
+    "chat_ai_Chat": "Чат з ШІ",
+    "chat_chat_for_communication_with_artificial": "Чат для спілкування зі штучним інтелектом",
+    "chat_this_component_is_under_development": "Цей компонент знаходиться в розробці.",
+    "chat_thank_you_for_your_understanding...": "Дякуємо за розуміння...",
+  
+    "blog": "Блог",
+    "blog_a_blog_will_be_created_for_you_here": "Тут буде створено ваш блог",
+    "blog_this_component_is_under_development": "Цей компонент знаходиться в розробці.",
+    "blog_thank_you_for_your_understanding...": "Дякуємо за розуміння...",
+  
+    "issues": "Проблеми",
+    "issues_solved_issues_will_be_described": "Вирішені проблеми будуть описані тут у майбутньому.",
+    "issues_this_component_is_under_development": "Цей компонент знаходиться в розробці.",
+    "issues_thank_you_for_your_understanding...": "Дякуємо за розуміння...",
+  
+    "logs": "Журнали",
+    "logs_manage_your_logs_here.": "Керуйте своїми журналами тут.",
+  
+    "docs": "Документація",
+    "docs_link_to_the": "Посилання на вихідний код проєкту...",
+    "docs_to_rest_api": "Посилання на документацію REST API...",
+    "docs_operating_instructions": "Інструкція з експлуатації:",
+  
+    "analytics": "Аналітика",
+    "analytics_here_you_will_find_analytical_data.": "Тут ви знайдете аналітичні дані.",
+    "analytics_this_component_is_under_development": "Цей компонент знаходиться в розробці.",
+    "analytics_thank_you_for_your_understanding...": "Дякуємо за розуміння...",
+  
+    "settings": "Керування ролями"
+  }
+  

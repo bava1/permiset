@@ -15,6 +15,7 @@ import UserItem from "../components/UserItem";
 import { User } from "../utils/interfaces/IUser";
 import { useTheme } from "@mui/material/styles";
 import UserFilters from "../components/UserFilters";
+import { useTranslation } from "react-i18next";
 
 const UsersPage: React.FC = () => {
   const { hasPermission, user } = useAuth();
@@ -37,6 +38,7 @@ const UsersPage: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(8);
 
   const theme = useTheme();
+  const { t } = useTranslation("common");
 
   // Load users
   const loadUsers = async () => {
@@ -192,7 +194,7 @@ const UsersPage: React.FC = () => {
   return (
     <ProtectedRoute>
       <Box>
-        <h1>Users Management</h1>
+        <h1>{t("users_users_Management")}</h1>
         {loading ? (
           <Box sx={{ textAlign: "center", marginTop: 4 }}>
             <CircularProgress />
