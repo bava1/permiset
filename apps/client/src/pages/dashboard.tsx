@@ -47,7 +47,7 @@ export default function Dashboard() {
           <Typography variant="h5" component="div">
             {t("dashboard_general_information_about_users")}
           </Typography>
-          <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
+          <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>Adjective</Typography>
           <Typography variant="body1">
             {t("dashboard_total_registered")}: {users.length}
             <br />
@@ -62,7 +62,7 @@ export default function Dashboard() {
             {t("dashboard_total_registered_role_User")}: {(users.filter((user) => user.role === 'User')).length}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions sx={{ p: 2 }}>
           <Button size="small">Learn More</Button>
         </CardActions>
       </Card>

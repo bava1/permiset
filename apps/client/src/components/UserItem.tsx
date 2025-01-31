@@ -4,7 +4,6 @@ import Image from "next/image";
 import { UserItemProps } from "../utils/interfaces/IUserItemProps";
 
 
-
 const UserItem: React.FC<UserItemProps> = ({
   userItem,
   hasPermission,

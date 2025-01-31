@@ -27,7 +27,7 @@ const HeaderClockCalendar: React.FC = () => {
       padding={1}
       color="white"
     >
-      <Typography sx={{ mr: 1, opacity: 0.8 }} variant="h6" component="div">
+      <Typography sx={{ opacity: 0.8 }} variant="h6" component="div">
       {formatTime(dateTime)} {formatDate(dateTime)} 
       </Typography>
     </Box>

@@ -28,12 +28,12 @@ export default function LanguageSwitcher() {
       value={lang}
       onChange={changeLanguage}
       displayEmpty
-      sx={{ color: "white", width: 100, boxShadow: "none", "& fieldset": { border: "none" } }} // ✅Set the minimum width
+      sx={{ color: "white", width: 95, boxShadow: "none", "& fieldset": { border: "none" } }} // ✅Set the minimum width
     >
       {languages.map(({ code, name, flag }) => (
         <MenuItem key={code} value={code}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Avatar src={flag} alt={code} sx={{ width: 26, height: 26 }} /> {/* ✅Flag  */}
+            <Avatar src={flag} alt={code} sx={{ width: 22, height: 22, boxShadow: 2 }} /> {/* ✅Flag  */}
             {name} {/* ✅ Language name */}
           </Box>
         </MenuItem>
