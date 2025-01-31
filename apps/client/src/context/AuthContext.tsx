@@ -13,13 +13,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [permissions, setPermissions] = useState<string[]>([]);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const router = useRouter();
-  const tokenRef = useRef<string | null>(null); // 🔥 Теперь токен сохраняется при смене языка
+  const tokenRef = useRef<string | null>(null); 
 
-  // ✅ Вход в систему
+  // ✅ Login
   const login = async (email: string, password: string) => {
     try {
       const { token, refreshToken, user } = await apiLogin(email, password);
-      if (!token) throw new Error("❌ Сервер не вернул токен!");
+      // if (!token) throw new Error("❌The server did not return the token! ");
 
       if (typeof window !== "undefined") {
         localStorage.setItem("auth_token", token);
@@ -32,22 +32,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(user);
       setPermissions(user.permissions || []);
     } catch (err) {
-      console.error("❌ Ошибка входа:", err);
+      console.error("❌Login error: ", err);
     }
   };
 
-  // ✅ Регистрация (чтобы убрать ошибку `missing register`)
+  // ✅Register (to remove `missing register` error)
   const register = async (name: string, email: string, password: string, role?: string, status?: string) => {
     try {
       await axiosClient.post("/auth/register", { name, email, password, role, status });
       if (!role && !status) await login(email, password);
     } catch (err: any) {
-      console.error("❌ Ошибка регистрации:", err);
-      throw new Error(err.response?.data?.message || "Ошибка регистрации.");
+      console.error("❌Registration error: ", err);
+      throw new Error(err.response?.data?.message || "Registration error.");
     }
   };
 
-  // ✅ Выход из системы
+  // ✅ Logout
   const logout = async () => {
     try {
       if (typeof window !== "undefined") {
@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.removeItem("refresh_token");
       }
     } catch (err) {
-      console.error("❌ Ошибка выхода:", err);
+      console.error("❌ Exit Error:", err);
     } finally {
       tokenRef.current = null;
       setToken(null);
@@ -66,14 +66,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // ✅ Проверка прав (чтобы убрать ошибку `missing hasPermission`)
+  // ✅ Checking permissions (to remove `missing hasPermission` error)
   const hasPermission = (permission: string): boolean => permissions.includes(permission);
 
-  // ✅ Теперь токен загружается при смене языка
+  // ✅ Now the token is loaded when changing the language
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedToken = localStorage.getItem("auth_token");
-      console.log("🔹 useEffect запущен. Найден токен:", storedToken);
+      console.log("🔹 useEffect started. Token found:", storedToken);
   
       if (!storedToken) {
         setIsAuthLoading(false);
@@ -88,7 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setPermissions(user.permissions || []);
         })
         .catch(() => {
-          console.warn("⚠️ Ошибка проверки токена, но logout НЕ выполняем.");
+          console.warn("⚠️ Token verification error, but logout is NOT executed.");
           setUser(null);
         })
         .finally(() => setIsAuthLoading(false));
@@ -104,11 +104,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         permissions,
         login,
-        register, // 🔥 ДОБАВЛЕНО → Больше нет ошибки missing register!
+        register, 
         logout,
         isAuthenticated,
         isAuthLoading,
-        hasPermission, // 🔥 ДОБАВЛЕНО → Больше нет ошибки missing hasPermission!
+        hasPermission, 
       }}
     >
       {children}
@@ -118,6 +118,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth должен использоваться внутри AuthProvider");
+  if (!context) throw new Error("useAuth must be used inside AuthProvider");
   return context;
 };

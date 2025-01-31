@@ -8,7 +8,8 @@ const languages = [
     { code: "en", name: "EN", flag: "/img/en-min.jpg" },
     { code: "de", name: "DE", flag: "/img/de-min.jpg" },
     { code: "ua", name: "UA", flag: "/img/ua-min.jpg" },
-    { code: "ru", name: "RU", flag: "/img/ru-min.jpg" },
+    // { code: "ru", name: "RU", flag: "/img/ru-min.jpg" },
+    { code: "it", name: "IT", flag: "/img/it-min.jpg" },
 ];
 
 export default function LanguageSwitcher() {

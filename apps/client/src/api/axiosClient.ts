@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  // baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
-  baseURL: process.env.RENDER_EXPRESS_API_URL || "https://permiset-express-latest.onrender.com",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  // baseURL: process.env.RENDER_EXPRESS_API_URL || "https://permiset-express-latest.onrender.com",
 });
 
-// ✅ Теперь используем `sessionStorage`, чтобы токен не терялся при смене языка
+// ✅ Now we use `sessionStorage` so that the token is not lost when changing the language
 axiosClient.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
@@ -19,24 +19,15 @@ axiosClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ✅ Исправляем обработку 401 → больше НЕ вызываем logout
+// ✅ Fix 401 handling → NO LONGER calling logout
 axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      console.warn("⚠️ Ошибка 401: Токен недействителен, но logout НЕ выполняем.");
+      console.warn("⚠️Error 401: Token is invalid, but logout is NOT performed.");
     }
     return Promise.reject(error);
   }
 );
 
 export default axiosClient;
-
-
-
-
-
-
-
-
-    // baseURL: process.env.RENDER_EXPRESS_API_URL || "https://permiset-express-latest.onrender.com",

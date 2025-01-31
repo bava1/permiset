@@ -1,0 +1,61 @@
+{
+    "menu_home": "Home",
+    "menu_dashboard": "Dashboard",
+    "menu_users": "Utenti",
+    "menu_chat": "Chat AI",
+    "menu_blog": "Blog",
+    "menu_issues": "Problemi",
+    "menu_logs": "Registri",
+    "menu_docs": "Documentazione",
+    "menu_analytics": "Analisi",
+    "menu_settings": "Impostazioni",
+    
+    "home_hello": "Ciao, Mondo!",
+    "home_welcome": "Benvenuto",
+    "home_you_are_logged_in_with_permissions": "Sei connesso con i permessi:",
+    "home_your_email": "La tua email:",
+    "home_your_status": "Il tuo stato:",
+    "home_date_of_creation": "Data di creazione:",
+    "home_last_modified_date": "Data dell'ultima modifica:",
+
+    "dashboard_welcome_to_Dashboard": "Benvenuto nella Dashboard!",
+    "dashboard_general_information_about_users": "Informazioni generali sugli utenti",
+    "dashboard_total_registered": "Totale registrati",
+    "dashboard_total_registered_active": "Totale registrati attivi",
+    "dashboard_total_registered_inactive": "Totale registrati inattivi",
+    "dashboard_total_registered_role_Administrator": "Totale registrati come Amministratore",
+    "dashboard_total_registered_role_Manager": "Totale registrati come Manager",
+    "dashboard_total_registered_role_User": "Totale registrati come Utente",
+
+    "users_users_Management": "Gestione utenti",
+
+    "chat_ai_Chat": "Chat AI",
+    "chat_chat_for_communication_with_artificial": "Chat per la comunicazione con l'intelligenza artificiale",
+    "chat_this_component_is_under_development": "Questo componente è in fase di sviluppo.",
+    "chat_thank_you_for_your_understanding...": "Grazie per la tua comprensione...",
+
+    "blog": "Blog",
+    "blog_a_blog_will_be_created_for_you_here": "Qui verrà creato un blog per te",
+    "blog_this_component_is_under_development": "Questo componente è in fase di sviluppo.",
+    "blog_thank_you_for_your_understanding...": "Grazie per la tua comprensione...",
+
+    "issues": "Problemi",
+    "issues_solved_issues_will_be_described": "I problemi risolti verranno descritti qui in futuro.",
+    "issues_this_component_is_under_development": "Questo componente è in fase di sviluppo.",
+    "issues_thank_you_for_your_understanding...": "Grazie per la tua comprensione...",
+
+    "logs": "Registri",
+    "logs_manage_your_logs_here.": "Gestisci i tuoi registri qui.",
+
+    "docs": "Documentazione",
+    "docs_link_to_the": "Collegamento al codice sorgente del progetto...",
+    "docs_to_rest_api": "Collegamento alla documentazione API REST...",
+    "docs_operating_instructions": "Istruzioni operative:",
+
+    "analytics": "Analisi",
+    "analytics_here_you_will_find_analytical_data.": "Qui troverai dati analitici.",
+    "analytics_this_component_is_under_development": "Questo componente è in fase di sviluppo.",
+    "analytics_thank_you_for_your_understanding...": "Grazie per la tua comprensione...",
+
+    "settings": "Gestione dei ruoli"
+}

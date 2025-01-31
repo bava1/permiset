@@ -11,8 +11,7 @@ import InsightsIcon from "@mui/icons-material/Insights";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function useNavItems() {
-  const { t } = useTranslation("common"); // ✅ Теперь хук внутри функции
-
+  const { t } = useTranslation("common"); 
   return [
     { label: t("menu_home"), path: "/", icon: <HomeIcon />, roles: ["User", "Manager", "Administrator"] },
     { label: t("menu_dashboard"), path: "/dashboard", icon: <DashboardIcon />, roles: ["Manager", "Administrator"] },

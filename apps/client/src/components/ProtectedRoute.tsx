@@ -8,21 +8,26 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
   const { isAuthenticated, isAuthLoading, user, logout } = useAuth();
   const router = useRouter();
   const [isVerified, setIsVerified] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     const verifyAccess = async () => {
-      console.log("🔹 Проверяем доступ:", { isAuthLoading, isAuthenticated, user });
-      if (isAuthLoading) return; // Ждём загрузки
+      console.log("🔹Checking access: ", { isAuthLoading, isAuthenticated, user });
+
+      if (isAuthLoading) return; // ✅ Waiting for loading
 
       if (!isAuthenticated) {
-        console.warn("❌ Пользователь не аутентифицирован. Ожидаем перед редиректом...");
+        console.warn("❌User not authenticated. Navigating to /auth/login... ");
+        setRedirecting(true); // ✅ We show the spinner
+        router.replace("/auth/login");
         return;
       }
 
       if (roles && !roles.includes(user?.role || "")) {
-        console.warn("❌ Доступ запрещен. Недостаточно прав.");
-        await logout();
+        console.warn("❌Access denied. Insufficient rights. ");
+        setRedirecting(true); // ✅ Show spinner before logout
         router.replace("/auth/login");
+        return;
       }
 
       setIsVerified(true);
@@ -31,8 +36,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
     verifyAccess();
   }, [isAuthenticated, isAuthLoading, user, roles, router, logout]);
 
-  // Пока аутентификация загружается – показываем лоадер
-  if (isAuthLoading || !isVerified) {
+  // ✅ For now, we check access or redirect → we show only the spinner
+  if (isAuthLoading || redirecting || !isVerified) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
         <CircularProgress />

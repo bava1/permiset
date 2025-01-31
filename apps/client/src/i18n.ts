@@ -4,23 +4,20 @@ import HttpApi from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 i18n
-  .use(HttpApi) // 🔹 Подключаем загрузку JSON-файлов
-  .use(LanguageDetector) // 🔹 Автоматически определяет язык
+  .use(HttpApi)
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    supportedLngs: ["en", "ru", "cz", "de", "ua"], // 🔹 Доступные языки
-    fallbackLng: "en", // 🔹 Если язык не найден — используем английский
-    debug: true, // 🔹 Включаем логи
-    interpolation: {
-      escapeValue: false,
-    },
-    backend: {
-      loadPath: "/locales/{{lng}}/common.json", // 🔹 Путь к JSON-файлам
-    },
+    supportedLngs: ["en", "ru", "cz", "de", "ua", "it"],
+    fallbackLng: "en",
+    debug: true,
+    interpolation: { escapeValue: false },
+    backend: { loadPath: "/locales/{{lng}}/common.json" },
     detection: {
-      order: ["localStorage", "cookie", "navigator"], // 🔹 Определяем язык
+      order: ["localStorage", "cookie", "navigator"],
       caches: ["localStorage", "cookie"],
     },
   });
 
 export default i18n;
+
